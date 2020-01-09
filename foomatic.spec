@@ -4,7 +4,7 @@
 Summary: Database of printers and printer drivers
 Name:    foomatic
 Version: %{enginever}
-Release: 1%{?dist}
+Release: 1%{?dist}.1
 License: GPLv2+
 Group: System Environment/Libraries
 
@@ -21,6 +21,10 @@ Patch1: foomatic-filters-libdir.patch
 
 # Use mkstemp, not mktemp.
 Patch2: foomatic-mkstemp.patch
+
+# Applied patch to fix improper sanitization of command line options
+# (CVE-2011-2697, bug #721001).
+Patch3: foomatic-filters-CVE-2011-2697.patch
 
 ## PATCHES FOR FOOMATIC-DB-ENGINE (PATCHES 101 TO 200)
 
@@ -72,6 +76,7 @@ The site http://www.linuxprinting.org/ is based on this database.
 pushd foomatic-filters-%{filtersver}
 %patch1 -p1 -b .libdir
 %patch2 -p1 -b .mkstemp
+%patch3 -p1 -b .CVE-2011-2697
 aclocal
 automake
 autoconf
@@ -154,7 +159,7 @@ rm -fr %buildroot $RPM_BUILD_DIR/%{name}
 %config(noreplace) %{_sysconfdir}/foomatic/defaultspooler
 %{_bindir}/*
 %{_sbindir}/*
-%{_datadir}/perl5/Foomatic
+%{perl_vendorlib}/Foomatic
 /usr/lib/cups/backend/*
 /usr/lib/cups/driver/*
 /usr/lib/cups/filter/*
@@ -162,6 +167,10 @@ rm -fr %buildroot $RPM_BUILD_DIR/%{name}
 %{_var}/cache/foomatic
 
 %changelog
+* Tue Jul 26 2011 Tim Waugh <twaugh@redhat.com> - 4.0.4-1:.1
+- Applied patch to fix improper sanitization of command line options
+  (CVE-2011-2697, bug #721001).
+
 * Thu Mar 18 2010 Tim Waugh <twaugh@redhat.com> - 4.0.4-1
 - Updated to 4.0.4 (bug #570234).  No longer buildrequires
   ghostscript-devel (but requires ghostscript) or
