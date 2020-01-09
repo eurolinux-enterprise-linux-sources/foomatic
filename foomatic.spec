@@ -4,7 +4,7 @@
 Summary: Database of printers and printer drivers
 Name:    foomatic
 Version: %{enginever}
-Release: 3%{?dist}
+Release: 5%{?dist}
 License: GPLv2+
 Group: System Environment/Libraries
 
@@ -28,6 +28,13 @@ Patch3: foomatic-filters-CVE-2011-2964.patch
 
 # Too few arguments for format in a debugging string (bug #726385).
 Patch4: foomatic-filters-format-string.patch
+
+# Prevent foomatic-rip overrun (bug #1214534).
+Patch5: foomatic-filters-foomatic-rip-overrun.patch
+
+# Also consider back tick and semicolon as illegal shell escape characters.
+# CVE-2015-8327, CVE-2015-8560
+Patch6: foomatic-filters-CVE-2015-8327-CVE-2015-8560.patch
 
 ## PATCHES FOR FOOMATIC-DB-ENGINE (PATCHES 101 TO 200)
 
@@ -81,6 +88,8 @@ pushd foomatic-filters-%{filtersver}
 %patch2 -p1 -b .mkstemp
 %patch3 -p1 -b .CVE-2011-2964
 %patch4 -p1 -b .format-string
+%patch5 -p1 -b .foomatic-rip-overrun
+%patch6 -p1 -b .CVE-2015-8327-CVE-2015-8560
 aclocal
 automake
 autoconf
@@ -168,6 +177,13 @@ rm -fr %buildroot $RPM_BUILD_DIR/%{name}
 %{_var}/cache/foomatic
 
 %changelog
+* Fri Jan 22 2016 Jiri Popelka <jpopelka@redhat.com> - 4.0.4-5
+- Also consider back tick and semicolon as illegal shell escape characters.
+- CVE-2015-8327, CVE-2015-8560
+
+* Fri May 29 2015 Tim Waugh <twaugh@redhat.com> - 4.0.4-4
+- Prevent foomatic-rip overrun (bug #1214534).
+
 * Fri Jun 14 2013 Tim Waugh <twaugh@redhat.com> - 4.0.4-3
 - Too few arguments for format in a debugging string (bug #726385).
 - Fixed perl installation locations for build (bug #661770).
