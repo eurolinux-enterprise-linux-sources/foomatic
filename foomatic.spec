@@ -4,7 +4,7 @@
 Summary: Database of printers and printer drivers
 Name:    foomatic
 Version: %{enginever}
-Release: 1%{?dist}.1
+Release: 3%{?dist}
 License: GPLv2+
 Group: System Environment/Libraries
 
@@ -23,8 +23,11 @@ Patch1: foomatic-filters-libdir.patch
 Patch2: foomatic-mkstemp.patch
 
 # Applied patch to fix improper sanitization of command line options
-# (CVE-2011-2697, bug #721001).
-Patch3: foomatic-filters-CVE-2011-2697.patch
+# (CVE-2011-2964, bug #727016).
+Patch3: foomatic-filters-CVE-2011-2964.patch
+
+# Too few arguments for format in a debugging string (bug #726385).
+Patch4: foomatic-filters-format-string.patch
 
 ## PATCHES FOR FOOMATIC-DB-ENGINE (PATCHES 101 TO 200)
 
@@ -76,7 +79,8 @@ The site http://www.linuxprinting.org/ is based on this database.
 pushd foomatic-filters-%{filtersver}
 %patch1 -p1 -b .libdir
 %patch2 -p1 -b .mkstemp
-%patch3 -p1 -b .CVE-2011-2697
+%patch3 -p1 -b .CVE-2011-2964
+%patch4 -p1 -b .format-string
 aclocal
 automake
 autoconf
@@ -111,20 +115,17 @@ popd
 rm -rf $RPM_BUILD_ROOT
 
 pushd foomatic-filters-%{filtersver}
-eval `perl '-V:installvendorlib' '-V:installvendorarch'`
-mkdir -p $RPM_BUILD_ROOT/$installvendorlib
-export INSTALLSITELIB=$RPM_BUILD_ROOT/$installvendorlib
-export INSTALLSITEARCH=$RPM_BUILD_ROOT/$installvendorarch
+mkdir -p $RPM_BUILD_ROOT/%{perl_vendorlib}
 make    DESTDIR=%buildroot PREFIX=%{_prefix} \
-        INSTALLSITELIB=$RPM_BUILD_ROOT/$installvendorlib \
-        INSTALLSITEARCH=$RPM_BUILD_ROOT/$installvendorarch \
+        INSTALLSITELIB=%{perl_vendorlib} \
+        INSTALLSITEARCH=%{perl_vendorarch} \
         install-main install-cups
 popd
 
 pushd foomatic-db-engine-%{enginever}
 make    DESTDIR=%buildroot PREFIX=%{_prefix} \
-        INSTALLSITELIB=$installvendorlib \
-        INSTALLSITEARCH=$installvendorarch \
+        INSTALLSITELIB=%{perl_vendorlib} \
+        INSTALLSITEARCH=%{perl_vendorarch} \
         install
 popd
 
@@ -167,9 +168,13 @@ rm -fr %buildroot $RPM_BUILD_DIR/%{name}
 %{_var}/cache/foomatic
 
 %changelog
-* Tue Jul 26 2011 Tim Waugh <twaugh@redhat.com> - 4.0.4-1:.1
+* Fri Jun 14 2013 Tim Waugh <twaugh@redhat.com> - 4.0.4-3
+- Too few arguments for format in a debugging string (bug #726385).
+- Fixed perl installation locations for build (bug #661770).
+
+* Mon Aug  8 2011 Tim Waugh <twaugh@redhat.com> - 4.0.4-2
 - Applied patch to fix improper sanitization of command line options
-  (CVE-2011-2697, bug #721001).
+  (CVE-2011-2964, bug #727016).
 
 * Thu Mar 18 2010 Tim Waugh <twaugh@redhat.com> - 4.0.4-1
 - Updated to 4.0.4 (bug #570234).  No longer buildrequires
