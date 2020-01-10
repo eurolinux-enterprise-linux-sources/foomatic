@@ -4,13 +4,13 @@
 Summary: Tools for using the foomatic database of printers and printer drivers
 Name:       foomatic
 Version:    %{enginever}
-Release:    3%{?dist}
+Release:    6%{?dist}
 License:    GPLv2+
 Group: System Environment/Libraries
 
-# printer-filters package has gone (bug #967316).
-Obsoletes: printer-filters < printer-filters-1.1-8
-Provides: printer-filters = printer-filters-1.1-8
+# printer-filters package has gone (bug #967316, bug #1035450).
+Obsoletes: printer-filters < 1.1-8
+Provides: printer-filters = 1.1-8
 
 # The database engine.
 Source0: http://www.openprinting.org/download/foomatic/foomatic-db-engine-%{enginever}.tar.gz
@@ -191,6 +191,15 @@ exit 0
 %{_mandir}/man1/foomatic-rip.1*
 
 %changelog
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 4.0.9-6
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 4.0.9-5
+- Mass rebuild 2013-12-27
+
+* Fri Dec 13 2013 Jiri Popelka <jpopelka@redhat.com> - 4.0.9-4
+- Correct Obsoletes/Provides printer-filters (bug #1035450)
+
 * Mon Jun  3 2013 Tim Waugh <twaugh@redhat.com> - 4.0.9-3
 - Obsolete/provide printer-filters package now it has gone (bug #967316).
 
