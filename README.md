@@ -1,3 +1,4 @@
-# ELS - Enterprise Linux/EuroLinux Sources - foomatic 
+# ELS - Enterprise Linux/EuroLinux Sources - foomatic
+ 
 ## Usage:
-  Checkout branch or tag.
+  Checkout branch or tag. Use `make sources` to recreate  SOURCE0 archive.

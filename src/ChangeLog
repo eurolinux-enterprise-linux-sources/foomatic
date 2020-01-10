@@ -1,0 +1,4813 @@
+2013-03-11 Till Kamppeter <till.kamppeter@gmail.com>
+
+	* Tagged branch for release 4.0.9.
+
+	* README, USAGE, configure.ac: Updated for release 4.0.9.
+
+	* lib/Foomatic/DB.pm: Error out when initializing the DB object
+	  without any form of a Foomatic database being present, made
+	  the getpage() method a normal, object-independent function as
+	  it does not need a Foomatic database.
+
+	* foomatic-configure.in, foomatic-printjob.in: Updated to use
+	  getpage() as a normal function, fixed CUPS check, made
+	  foomatic-printjob working without presence of a Foomatic
+	  database.
+
+2011-07-25  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* Tagged branch for release 4.0.8.
+
+	* README, USAGE, configure.ac: Updated for release 4.0.8.
+
+2011-06-30  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/PPD.pm: Improved printer entry searh algorithm
+	  (find_printer() method) in two points:
+	   1. Score match of only make and model in printer ID of the entry
+	      higher than match of make and model fields of the entry but
+	      lower than match of full printer ID. This raises the relevance
+	      of printer ID matches if the search term contains only a partial
+	      device ID consisting of only the make and model fields.
+	   2. Score a printer entry with an actual printer XML file 1 point
+	      higher than an implicit printer entry only coming from a
+	      printer name in a driver's printer list. This raises the
+	      relevance of actual printer XML entries.
+
+2011-03-04  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/PPD.pm: Handle non-UTF-8 encodings in imported PPD
+	  files. Thanks to Richard Hughes (hughsient at gmail dot com) for
+	  supplying me this patch from Red Hat.
+
+	* configure.ac: Added libdir support for the ./configure
+	  script. Thanks to Richard Hughes (hughsient at gmail dot com) for
+	  supplying me this patch from Red Hat.
+
+2011-02-18  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* Tagged branch for release 4.0.7.
+
+	* README, USAGE, configure.ac: Updated for release 4.0.7.
+
+2011-01-04  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Improved code of the _get_xml_filelist()
+	  function: This avoids repeated construction of the "names-$dir"
+	  string and a crash of Perl if the directory does not contain any
+	  XML file (bug #613). Thanks to Christopher Yeleighton (giecrilj at
+	  stegny dot 2a dot pl) for the report.
+
+	* lib/Foomatic/DB.pm: Fixed wrong quotes in error message which
+	  prevented a variable from being substituted by its value (bug
+	  #612). Thanks to Christopher Yeleighton (giecrilj at stegny dot 2a
+	  dot pl) for the report.
+
+	* README: Fixed typos (bug #608). Thanks to Christopher Yeleighton
+	  (giecrilj at stegny dot 2a dot pl) for the report.
+
+	* Makefile.in: Silenced warning about datarootdir when running
+	  "./configure".
+
+	* configure.ac: Replaced deprecated AC_OUTPUT with argumenmts by
+	  the correct usage (bug #611). Thanks to Christopher Yeleighton
+	  (giecrilj at stegny dot 2a dot pl) for the hint.
+
+	* configure.ac: Converted many "dnl" comments into "#" comments so
+	  that they make it into the "./configure" script (bug #610). Thanks
+	  to Christopher Yeleighton (giecrilj at stegny dot 2a dot pl) for
+	  the hint.
+
+	* configure.ac: Make choosing the install directory for Perl libraries
+	  really working. The code which was commented out was not working.
+	  Now bug #605 is really fixed.
+
+2011-01-03  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* configure.ac, acinclude.m4: Avoid name space conflicts by letting
+	  the names of our own macros start with "FM_" and not with "AC_"
+	  (bug #609). Thanks to Christopher Yeleighton (giecrilj at stegny
+	  dot 2a dot pl) for the report.
+
+	* configure.ac: Allow choosing the install directory for the
+	  Perl library DB.pm (perl, site, vendor). Requires autoconf 2.52
+	  or newer (checked with "AC_PREREQ([2.52])"). Bug #605. Thanks
+	  to Christopher Yeleighton (giecrilj at stegny dot 2a dot pl) for
+	  the report.
+
+	* foomatic-perl-data.c: Eliminated compiler warnings by consistent
+	  use of "const" with xmlChar and char variables (bug #604). Thanks
+	  to Christopher Yeleighton (giecrilj at stegny dot 2a dot pl) for
+	  the patch.
+
+	* foomatic-combo-xml.c: Improved readability of the code by using
+	  symbolic constants and additional comments. Also eliminated
+	  warnings about value-less "return"s and unused variables (bug
+	  #599, #600, #601). Thanks to Christopher Yeleighton (giecrilj at
+	  stegny dot 2a dot pl) for the patch.
+
+2010-12-15  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* Tagged branch for release 4.0.6.
+
+	* README, USAGE, configure.ac: Updated for release 4.0.6.
+
+	* README: Documented special entities for inserting job parameters,
+	  like "&job;", "&user;", "&host;", "&title;", "&options;", ...
+
+2010-12-13  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-ppd-to-xml.in: Allow generating a printer XML files also
+	  from more than one PPD file for the same printer with only one call
+	  of the foomatic-ppd-to-xml script. Feature request from George Liu
+	  from Ricoh (bug #565).
+
+	* lib/Foomatic/DB.pm: Allow loading arbitrary printer and driver
+	  XML files into the Perl data structure, not only XML files which
+	  are in the current XML database.
+	  When generating Perl data from a PPD do not add a new paragraph to
+	  the printer comments if the added comment is empty.
+
+2010-12-09  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* Makefile.in: Rearranged gcc command line so that linking works
+	  with gcc 4.5.x (Ubuntu bug #687973).
+
+2010-12-08  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Sort the driver lists in printer XML files
+	  alphabetically (case-insensitive) when generating XML files from
+	  a Perl data structure, so that the files are identical to the
+	  MySQL -> XML exporter on the OpenPrinting web servers. This
+	  prevents automatic BZR commits into foomatic-db or
+	  foomatic-db-nonfree which contain nothing more than driver list
+	  reordering.
+
+	* README, lib/Foomatic/DB.pm, ppdtoxml: Use always a single space
+	  before the closing "/>" of body-less tags. This way the XML style
+	  of files committed to the BZR repositories of foomatic-db and
+	  foomatic-db-nonfree is the same as the XML style used by the
+	  export of XML from the MySQL database on the OpenPrinting web
+	  server and so the daily synchronization does not commit pure
+	  XML style changes into the BZR repositories.
+
+2010-11-26  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm, foomatic-ppd-to-xml.in: Added new features to
+	  foomatic-ppd-to-xml: Now custom comments can be added (-c), the
+	  deafult comments can get suppressed (-C), and XML files with only
+	  te drivers requested with -r and -d can be generated (-D).
+
+2010-08-30  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Do not die if the C helper programs
+	  foomatic-combo-xml and foomatic-perl-data fail. Simply return
+	  undef so that the caller can handle the error.
+
+2010-08-26  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-ppdfile.in: Fixed bug that made the PPD URI
+	  foomatic:Apollo-P-2100-hpijs-pcl3.ppd interpreted as printer
+	  Apollo-P-2100-hpijs and driver pcl3.
+
+2010-08-09  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* Tagged branch for release 4.0.5.
+
+	* README, USAGE, configure.ac: Updated for release 4.0.5.
+
+2010-07-10  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-perl-data.c: Added support for the new "fingerprint"
+	  parameter of the <package> tag.
+
+2010-07-05  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* README: Documented new "fingerprint" parameter for the <package>
+	  tag. It provides a link to key fingerprint on the web site of the
+	  issuer of the driver.
+
+2010-06-23  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-compiledb.1.in, foomatic-kitload.8.in: Fixed some
+	  hyphen-used-as-minus lintian warnings. Thanks to Didier Raboud
+	  (didier at raboud dot com) for the patch.
+
+2010-06-11  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* Makefile.in: Do "make install" in lib/ directory with explicit
+	  use of DESTDIR. Otherwise it can come to a duplicate insertion
+	  of DESTDIR. Thanks to Tim Mooney for the patch (Bug #445).
+
+	* configure.ac: Simplified and generalized the check for the Perl
+	  library directory prefix in the configure script. Thanks to Tim
+	  Mooney (Bug #418).
+
+	* configure.ac: Check for functions of libxml with CFLAGS and LIBS
+	  containing the detected references to libxml. Thanks to Tim Mooney
+	  for the patch (Bug #444).
+
+2010-03-16  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: apply_driver_and_pdl_info(): Do not add
+	  "lj5mono" to the list of suitable drivers any more, this driver
+	  entry was removed from the OpenPrinting database.
+
+2010-02-26  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-printermap-to-gutenprint-xml.in: Adjusted indenting of the
+	  generated XML code to match the indenting of the XML code exported
+	  from the MySQL database on the OpenPrinting web server.
+
+2010-02-15  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* Tagged branch for release 4.0.4.
+
+	* README, USAGE, configure.ac: Updated for release 4.0.4.
+
+2010-02-05  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* README: Corrected PPD keyword: It must read
+	  "*FoomaticRIPNoPageAccounting" and not "*FoomaticNoPageAccounting".
+
+2010-02-01  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* README: Mirrored changes from foomatic-db: <packages> tags are
+	  now required for driver XML files where binary driver packages are
+	  provided on the OpenPrinting web server.
+
+2010-01-26  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-compiledb.in: Do not check whether there is a printer
+	  database entry for a given printer/driver combo, we can generate
+	  PPDs also without printer entry.
+
+2010-01-25  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-combo-xml.c, foomatic-ppdfile.in:
+	  Made Foomatic generating Foomatic PPD files if there is no
+	  printer XML file for the given printer/driver combo (but the
+	  printer listed as supported in the driver XML) and made Foomatic
+	  also returning ready-made PPDs if the driver XML file for the
+	  combo does not exist (driver name mentioned only in the list of
+	  supporting drivers in the printer XML file).
+
+	* foomatic-ppdfile.in: Fixed bug of "list" output never including
+	  entries for ready-made PPDs, even if this is selected in
+	  /etc/cups/foomatic.conf.
+
+	* foomatic-combo-xml.c: Fixed bug of a driver without <prototype>
+	  tags at all (not only empty but existing <prototype> tags) being
+	  considered as producing Foomatic PPDs. Such driver entries came up
+	  after importing the whole Foomatic DB into MySQL and exporting it
+	  back to XML.
+
+	* foomatic-combo-xml.c: If an overview is requested but only with
+	  PPD-producing printer/driver combos and without ready-made PPDs,
+	  combos with both a command line prototype in their driver XML and
+	  a PPD link in their printer XML got displayed. As Foomatic returns
+	  the ready-made PPD in such a case and not the Foomatic PPDs these
+	  entries get suppressed now.
+
+2009-12-26  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* README: Mirrored changes from the README file of foomatic-db.
+
+2009-12-22  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm, foomatic-ppd-to-xml.in: If the PPD file
+	  supplied to foomatic-ppd-to-xml is compressed and should be
+	  linked in the generated printer XML file, assume that it gets
+	  added to the OpenPrinting database uncompressed. Therefore
+	  remove the ".gz" extension from the link.
+
+	* lib/Foomatic/DB.pm: If a PPD file supplied to the ppdtoperl()
+	  function contains information about the page description
+	  languages in the device ID or a Foomatic driver ID, use this
+	  information for the generated printer data structure.
+
+2009-12-21  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm, foomatic-ppd-to-xml.in: Allow supplying a
+	  PPD file to foomatic-ppd-to-xml which is not installed into the
+	  Foomatic database tree (then the standard location
+	  db/source/PPD/<make>/<PPD filename> is assumed for a PPD file
+	  link in the printer XML file). Added the "-x" option to
+	  foomatic-ppd-to-xml whichj lets printer XMLs be generated from
+	  the PPD without checking whether the appropriate printers
+	  already exist.
+
+2008-10-27  Dafydd Crosby <dcrosby@userful.com>
+
+	* ppdtoxml: Version 0.21.
+
+2009-10-08  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* README: Updated the README file for all recent changes and
+	  additions in the XML data format of the Foomatic database.
+
+	* lib/Foomatic/DB.pm: Set "*ColorDevice:" in the Foomatic PPD
+	  files not only based on whether the printer is a color printer
+	  but also on whether the driver is capable of generating color
+	  output (if appropriate information about the driver is
+	  available).
+
+2009-09-18  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-ppdfile.in: When generating a PPD file, do only generate
+	  the overview if really needed. This makes generating PPDs much
+	  faster.
+
+2009-09-17  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Removed line
+
+	  *cupsFilter:   "application/vnd.apple-pdf 25 foomatic-rip"
+
+	  from the Foomatic-generated PPD files, it causes problems with
+	  some printers on Mac OS X (bug #386, removes enhancement of bug
+	  #313).
+
+2009-08-19  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* Tagged branch for release 4.0.3.
+
+	* README, USAGE, configure.ac: Updated for release 4.0.3.
+
+	* foomatic-ppd-to-xml.in: Added "-n" option to the foomatic-ppd-to-xml
+	  utility. This makes only new printer XML files being generated and
+	  no modified versions of existing files.
+
+2009-08-18  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-preferred-driver.in: The "hpijs" driver entry got replaced
+	  by "hplip".
+
+	* lib/Foomatic/DB.pm: Add "hpijs-pcl5e" or "hpijs-pcl5c" or "hplip"
+	  instead of "hpijs" to the driver list of the XML file of a PCL 5c/e
+	  printer if a printer XML file is generated from a PPD file.
+
+	  Fixed ppd1284DeviceID() function, it did not recognize the
+	  "CMD"/"COMMAND SET" field in the device ID string.
+
+	  Made sure that the fields in the IEEE-1284 device ID get closed with
+	  a semicolon before adding a new field.
+
+	  If there is a <ppdentry> XML tag for the printer/driver combo, do not
+	  use the <ppdentry> XML tags for the printer or the driver.
+
+	  Add "*PSVersion:" keywords for the newest Ghostscript versions to the
+	  PPD files.
+
+2009-07-17  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Added support for multiple "*Product:" lines
+	  in PPD files, improved determination of the model name from the
+	  PPD file, put generation of the Foomatic ID from make and model
+	  into the function generatepid().
+	  
+	* foomatic-ppd-to-xml.in: For determining whether there is already
+	  a Foomatic entry for the given PPD, use also all "*Product:"
+	  lines in the PPD and the PPD links in the XML files in the
+	  OpenPrinting database. Let more than one printer XML file get
+	  created if the PPD has multiple "*Product:" lines. General
+	  support for multiple printer XMLs for one PPD file. Warn if the
+	  "-l" command line switch is used if "-d" is not supplied.
+	
+2009-06-24  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* Tagged branch for release 4.0.2.
+
+	* README, USAGE, configure.ac: Updated for release 4.0.2.
+
+2009-06-22  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: At some points "==" was used to compare strings,
+	  it must be "eq". Especially this broke the PPD generation for all
+	  boolean command-line-style options (bug #356).
+
+2009-05-08  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-combo-xml.c: If a printer XML entry has a driver in its
+	  driver list but for which there is no driver XML entry, this
+	  printer/driver combo was considered as producing a PPD because the
+	  driver is not in the list of drivers without command line
+	  prototype. Replaced the negative list of drivers without command
+	  line prototype by a positive list of drivers with command
+	  line prototype. Now non-existing driver XML files are handled
+	  correctly as drivers not producing PPDs (Ubuntu bug #373371).
+
+2009-05-07  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: If a JCL option is member of a composite option
+	  it was generated incorrectly in the PPD files (Ubuntu bug #361772).
+
+2009-04-23  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* Re-tagged branch for release 4.0.1.
+
+	* README, USAGE, configure.ac: Updated.
+
+2009-04-19  Till Kamppeter <till.kamppeter@gmail.com>
+
+        * Tagged branch for release 4.0.1.
+
+2009-03-17  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-compiledb.in: Fixed copy-and-paste bug in foomatic-compiledb
+	  which broke the "-d" option (bug #319).
+
+2009-02-25  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Added "application/vnd.apple-pdf" as input
+	  mime type to the generated Foomatic PPDs, so that also under Mac
+	  OS X a full PDF printing workflow will get established (bug
+	  #313).
+
+2009-01-15  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: For string and password options the
+	  "*ParamCustom..." keywords were not generated correctly (option
+	  type missing, bug #297).
+	  Changed the way how the driver's short description is added to the
+	  PPD so that it can be longer than 80 characters (bug #296).
+
+2009-01-09  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* Tagged branch for release 4.0.0.
+
+2009-01-08  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-ppdfile.in: "foomatic-ppdfile list" showed wrong PPD
+	  file names for some printers (bug #281).
+
+2009-01-07  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* configure.ac: Bumped version number to 4.0.0.
+
+	* foomatic-combo-xml.c: All printers with <postscript> in their
+	  <lang> sections got listed as supported by the "Postscript"
+	  driver. Now explicit assignment of this driver via the
+	  <printers> section in the driver entry or the <drivers> section
+	  in the printer entry is required.
+	  Let the overview for listing only printer/driver combos with
+	  valid PPDs (foomatic-combo-xml -C") also show combos where the
+	  driver is only mentioned in the printer's driver list. Now
+	  foomatic-compiledb really generates all PPDs which are available
+	  on the OpenPrinting web site (bug #291).
+
+	* README, USAGE, TODO: Updated for version 4.0.0.
+
+	* lib/Foomatic/DB.pm: Improved printer search. Now searches with model
+	  number but without product line name also work (ex: "Ricoh MPC3500"
+	  finds the "Ricoh Aficio MP C3500").
+
+	* debian/: Removed. The Debian package maintainer does not maintain
+	  the debian directory in this BZR repository.
+
+	* foomatic-filters-ppds-README, foomatic-filters-ppds-install,
+	  README.build-foomatic-filters-ppds, Makefile.in: Removed build
+	  of the foomatic-filters-ppds package, as foomatic-rip is now
+	  written in C and so no universal platform-independent tarball of
+	  this type can be created any more.
+
+2008-11-11  Lars Uebernickel <larsuebernickel@gmx.de>
+	* lib/Foomatic/DB.pm: Set default section to 'JCL' when the option is
+	a JCL option.
+
+	* lib/Foomatic/DB.pm: Output CUPS custom options.
+
+	* lib/Foomatic/DB.pm: Set the correct section in OrderDependency
+	  (until now, AnySetup was always used)
+
+	* lib/Foomatic/DB.pm: Insert JCL code directly for JCL options (not
+	  via FoomaticRIPOptionSetting); Remove redundant FoomaticRIPOptions
+	  for JCL enumerated choice options.
+
+	* lib/Foomatic/DB.pm: Surround JCL option values with @PJL...<0A> if
+	  necessary. Quote prototypes of custom JCL options.
+
+2008-11-10  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-perl-data.c: If the overview XML input has no
+	  <functionality> field, the functionality entry stays a NULL
+	  pointer. On some systems like Solaris outputting a NULL pointer
+	  with "printf()" leads to a segmentation fault (under Linux it is
+	  no problem, the output will be "(null)"). Fix for bug #213.
+
+2008-10-28  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Match the field headers of IEEE-1284 device
+	  IDs case insensitively. Some IDs have these headers not
+	  all-uppercase, like Kyocera. Fixed also that the manufacturer
+	  name can creep into the "*Product:" field of the PPD when the
+	  model name cannot be read from the device ID.
+
+	* lib/Foomatic/DB.pm: Bumped version number in PPD header to 4.0.0.
+
+	* README, USAGE, configure.ac, foomatic-addpjloptions.in, 
+	  foomatic-perl-data.c, lib/Foomatic/DB.pm:
+	  s/GhostScript/Ghostscript/
+
+	* foomatic-ppd-to-xml.in, lib/Foomatic/DB.pm: Several fixes to
+	  find existing XMLs and to let merging changes into existing
+	  XMLs work correctly.
+
+2008-10-24  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-ppd-to-xml.in, lib/Foomatic/DB.pm: Let
+	  foomatic-ppd-to-xml find already existing printer entries and
+	  merge the reference to the PPD file into them instead of
+	  creating a new XML file. Let all XML files get created in a
+	  user-specified directory.
+
+	* lib/Foomatic/DB.pm: Let the perltoxml() function not put
+	  hard-coded comments into printer entries.
+
+2008-10-23  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-ppd-to-xml.in, lib/Foomatic/DB.pm: Moved driver and PDL
+	  magic of the XML file generation into lib/Foomatic/DB.pm.
+
+2008-10-22  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-ppd-to-xml.in, Makefile.in, configure.ac,
+	  lib/Foomatic/DB.pm: Added new "foomatic-ppd-to-xml" to generate
+	  Foomatic XML files corresponding to a given PPD file.
+
+	* lib/Foomatic/DB.pm: Improved "normalizename()" function for
+	  sorting printer, manufacturer, or driver lists.
+
+2008-10-02  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Changed method to find all printers
+	  supported by a given driver, so that printer/driver relations
+	  can also be defined by a <drivers> section in the printer entry.
+
+2008-09-06  Dafydd Crosby <dcrosby@userful.com>
+
+	* ppdtoxml: Can now add extra drivers to XML more easily.
+
+2008-09-03  Tim Waugh <twaugh@redhat.com>
+
+	* acinclude.m4: Fixed underquoted definitions.
+
+2008-09-02  Tim Waugh <twaugh@redhat.com>
+
+	* lib/Foomatic/DB.pm: Prevent busy loop when trying to shorten
+	PPD nicknames like "HP OfficeJet LX
+	Foomatic/gutenprint-ijs-simplified.5.0".
+
+2008-08-18  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Use "Oki" instead of "Okidata" when
+	  cleaning manufacturer names.
+
+2008-08-12  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Added on-disk cache functionality for the
+	  database overview Perl structure. To activate this functionality
+	  one does simply "use Foomatic::DB; my $db = new Foomatic::DB;
+	  $db->{'overviewfile'} = "<filename>";". The CGI scripts of the
+	  OpenPrinting web site generate overviews very frequently, so
+	  this should reduce the server load a lot (merged from stable
+	  branch).
+
+	* ppdtoxml: Now adds the <drivers> tag, inserting the preferred 
+	  driver automatically. The next release will allow the insertion
+	  of extra driver entries (from Dafydd Crosby, merged from stable
+	  branch).
+
+2008-08-12  Lars Uebernickel <larsuebernickel@gmx.de>
+
+	* lib/Foomatic/DB.pm, foomatic-perl-data.c: Added
+	  "*FoomaticRIPCommandlinePDF" and "*cupsFilter" lines for PDF
+	  printing workflow to all generated PPDs.
+
+2008-07-01  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Added on-disk cache functionality for the
+	  database overview Perl structure. To activate this functionality
+	  one does simply "use Foomatic::DB; my $db = new Foomatic::DB;
+	  $db->{'overviewfile'} = "<filename>";". The CGI scripts of the
+	  OpenPrinting web site generate overviews very frequently, so
+	  this should reduce the server load a lot.
+
+2008-06-25  Dafydd Crosby <dcrosby@userful.com>
+
+	* PPDtoXML: Now adds the <drivers> tag, inserting the preferred 
+	  driver automatically. The next release will allow the insertion
+	  of extra driver entries.
+
+2008-06-25  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-combo-xml.c: Allow XML files with header lines ("<? ... ?>",
+	  "<! ... >") in the beginning. Everything which is before the main
+	  tag of each file ("<printer>" for printer entries, "<driver>" for
+	  driver entries, and "<option>" for option entries) gets removed
+	  now.
+
+2008-06-18  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-perl-data.c: Added support for output of both translated
+	  and original (English) license text and for links to external
+	  license text files.
+
+2008-06-06  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-preferred-driver.in: Skip printers without printer
+	  XML entry, to avoid that empty printer XML files get generated.
+
+	* foomatic-compiledb.in: Simplify the generation of the list of
+	  valid printer/driver combos even more.
+
+2008-06-05  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-combo-xml.c: When supplying the "-C" option (overview
+	  of all printer/driver combos for which a PPD file is available),
+	  do not go through the printers without printer XML
+	  entries (printers only mentioned in driver XML entries) as they
+	  never have a valid PPD.
+
+	  Consider a printer/driver combo also valid if the driver is
+	  "Postscript" and in the <lang> section there is a <postscript>
+	  section, independent whether the printer is listed in the
+	  "Postscript" driver XML file.
+
+	  In the driver XML file only copy the XML section for selected
+	  printer into the emptied driver list if the section really
+	  exists.
+
+	  If we request an overview of only the printer/driver combos
+	  which provide a valid PPD file ("-C" option for
+	  foomatic-combo-xml) we do not list combos which have the
+	  requested driver only defined in the <drivers> section of the
+	  printer XML file (printer not in the driver list of the driver
+	  XML file) and no ready-made PPD file
+
+	  Strip white space from the name of the ready-made PPD file in
+	  the printer enrty.
+
+	  Let debug output show whether the selected printer/driver combo
+	  is valid.
+
+	  Bigger buffer for pseudo driver XML file for the case that the
+	  driver is confirmed by an entry in the printer XML file and
+	  there is no suitable driver XML file.
+
+	  Corrected error message for an invalid printer/driver combo. It
+	  caused a segfault.
+
+	  Do not go through the printer/driver combos where the printer is
+	  only defined by an entry in the driver's printer list and no
+	  printer XML file exists when we request an overview for only the
+	  combos which give a PPD file ("-C"). The combos without printer
+	  XML never give PPD files.
+
+	* foomatic-compiledb.in: If we request PPDs use the overview for
+	  only the combos with a valid PPD ("foomatic-combo-xml -C").
+
+	  Improved the way to find all valid combos. Use the overview
+	  ("foomatic-combo-xml -C", to only get combos with PPDs) and
+	  do not fork for generating the list of valid combos.
+
+	* lib/Foomatic/DB.pm: Added support for the "WindowsANSI" encoding
+	  in manufacturer-supplied PPD files.
+
+2008-05-19  Dafydd Crosby <dcrosby@userful.com>
+
+	* ppdtoxml: Moved to foomatic-db-engine. Now handles special 
+	  characters properly, made configuration more intuitive.
+
+2008-05-10  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Add "printer_exists()" function to check
+	  whether a printer XML file exists for a given printer ID. The
+	  "get_printer()" function is not suitable for this purpose
+	  any more.
+
+2008-05-09  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-combo-xml.c, foomatic-perl-data.c, lib/Foomatic/DB.pm:
+	  If a printer is in the list of supported printers of a driver
+	  XML file but there is no printer XML file for the printer,
+	  behave as the printer XML was there, generating a minimalistic
+	  pseudo entry. Mark the pseudo entries with the "<noxmlentry />"
+	  tag to distinguish them from real or user-contributed entries.
+
+2008-01-29  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-perl-data.c: Added "<patents>" tag to driver entries. Drivers
+	  which are free software but contain (possibly) patented algorithms
+	  (like JBIG compression) should be marked with this tag to warn users
+	  about the patent issues when auto-downloading the driver.
+
+2007-12-13  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-perl-data.c: Added "<group>" tag to driver entries. Drivers
+	  which differ only by their locales ("<locales>" tag) should have the
+	  same "<group>" tags. If the user queries a driver giving a locale
+	  he gets only the best matching from each group.
+
+2007-12-12  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Allow localized queries by adding a "language"
+	  field to the data structure and calling foomatic-perl-data with
+	  an appropriate "-l" option.
+
+	* foomatic-perl-data.c: Fixed "-l" option, with "-l" the debug mode
+	  was always activated.
+
+2007-12-11  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-perl-data.c: Added new XML tags "<licensetext>" (full
+	  text of the license), "<locales>" (locales for which this driver
+	  is recommended), "<requires>" (drivers which are required to be
+	  on the system to run this driver), and "<packages>" (explicit
+	  listing of downloadable package files). They were introduced to
+	  fulfill demands of the printer manufacturers.
+
+	  Allow internationalization in the "<license>", "<supplier>", and
+	  "<supportcontact>" fields.
+
+	  Fixed internationalization. Now it is at first tried to find a
+	  text version which matches the user-supplied locale ID exactly,
+	  then it is searched for a text version where the supplied locale
+	  ID matches at least the language (First two characters), and as
+	  last mean english text is shown.
+	
+2007-10-09  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: The PPD gnerator for CUPS did not list the
+	  PPDs correctly on printer names containing a comma (Ubuntu bug
+	  #150985).
+
+2007-08-20  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Let margins default to safer values (1/4
+	  inch on the left and on the right, 1/2 inch at the top and the
+	  bottom) if no margins are defined in the Foomatic database.
+	  Before, the default margins were all zero.
+
+	  Allow an empty model name in the search term for the
+	  find_printer() function ("ricoh|"), This way one can also search
+	  all printers from a given manufacturer, where the given
+	  manufacturer name does not need to match exactly with the name
+	  in the database.
+
+	  Some improvements in cleaning the manufacturer names.
+
+	  Improvements in the perltoxml() function.
+
+2007-07-18  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* README, foomatic-perl-data.c, lib/Foomatic/DB.pm: Added support
+	  for suppressing page accounting on a per-driver basis. If a
+	  driver XML file is marked with "<nopageaccounting/>" in its
+	  "<execution>" section, the line "*FoomaticNoPageAccounting:
+	  True" is added to the PPD file to let foomatic-rip suppress
+	  inserting the page accounting code into the PostScript data
+	  stream.
+
+2007-07-11  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* Makefile.in, README, README.build-foomatic-filters-ppds, USAGE,
+	  configure.ac, foomatic-preferred-driver.in,
+	  foomatic-printermap-to-gimp-print-xml.in,
+	  foomatic-printermap-to-gutenprint-xml.in, debian/presubj,
+	  lib/Foomatic/DB.pm: Replaced "Gimp-Print" by "Gutenprint".
+
+2007-07-10  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Allow group names preceeded by asterisks
+	  ('*') in PPD files ("*OpenGroup: ..."/"*CloseGroup: ..." lines).
+	  This is needed by the PPD for the KONICA MINOLTA magicolor 5430
+	  DL, provided by KONICA MINOLTA and probably also by several
+	  other manufacturer-supplied PPD files.
+
+2007-03-08  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-perl-data.c: Let the PPD files listed in the XML version
+	  of the overview also get listed in the Perl version.
+
+2007-03-04  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Improved find_printer() method. Now
+	  searches of make and model names do not consider other characters
+	  than letters and numbers any more. All other characters are and
+	  boundaries between letters and numbers are converted to single
+	  spaces.
+
+2007-03-03  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* debian/control: "gimp-print" -> "gutenprint".
+
+2007-02-28  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* lib/Foomatic/DB.pm: Added new find_printer() method, to find
+	  printer entries in the database based on IEEE-1284 device IDs
+	  (from printer auto-detection), make/model, make, or model.
+	  This is for a new search function on the site and also for
+	  finding driver packages by printer setup tools.
+
+	* foomatic-searchprinter.in, configure.ac, Makefile.in: Added
+	  simple tool to find printers in the locally installed
+	  Foomatic database using the new find_printer() method.
+
+2007-02-26  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-perl-data.c, lib/Foomatic/DB.pm: Let "<obsolete>" tags
+	  in driver XML files be read and added to the Perl data structures
+	  of driver entries, printer/driver combos, and the overview. Let
+	  this info also be put into the PPDs and into the "DRV:" field
+	  of the device IDs.
+
+2007-02-24  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-perl-data.c: Let Perl data structure for driver XML
+	  files also contain the printer-specific exceptions of the driver
+	  functionality data.
+
+2007-02-23  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-perl-data.c, lib/Foomatic/DB.pm: Allow specifying
+	  manufacturer names along with the "<manufacturersupplied>" tag
+	  in the driver XML file. In this case in the PPDs and in the PPD
+	  lists the driver is only marked as supplied by the manufacturer
+	  if the printer manufacturer's name matches one of the given
+	  names. For example if a Brother printer is used with HPIJS, the
+	  driver is not considered manufacturer-suppiled.
+
+2007-02-22  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-combo-xml.c, foomatic-perl-data.c, lib/Foomatic/DB.pm: 
+	  Let new driver data fields go into the generated PPD files and
+	  into the oberview output. To get this information into the PPD
+	  lists of CUPS 1.2.x when using on-the-fly PPD generation added
+	  a new "DRV:" field to the device ID which contains all the
+	  driver functionality information.
+
+2007-02-21  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-combo-xml.c, foomatic-perl-data.c: Added support for
+	  new data fields in the driver XML files. These data fields
+	  should describe the properties of the drivers in a better way to
+	  guide the user to find the best driver for his personal needs
+	  and also make printer setup tools clearly informing the user
+	  before downloading and installing a driver which is not part of
+	  the distribution.
+
+2007-02-07  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* Foomatic-Devel-Ideas.txt, README, debian/README.Debian,
+	  debian/control, foomatic-filters-ppds-README, lib/Foomatic/DB.pm:
+	  Replaced "FSG OpenPrinting" by "OpenPrinting".
+
+2007-02-06  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-perl-data.c: Added support for more driver types:
+	  CUPS Raster, IJS, and OpenPrinting Vector.
+
+2007-01-06  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* README, USAGE, README.build-foomatic-filters-ppds,
+	  foomatic-addpjloptions.8.in, foomatic-combo-xml.1.in,
+	  foomatic-compiledb.1.in, Foomatic-Devel-Ideas.txt,
+	  foomatic-filters-ppds-README, foomatic-kitload.8.in,
+	  foomatic-ppdfile.1.in, lib/Foomatic/DB.pm, debian/control,
+	  debian/copyright, debian/foomatic-bin.README.Debian,
+	  debian/README.Debian: Updated texts and links to have
+	  "http://www.openprinting.org/" and "FSG OpenPrinting".
+
+2007-01-04  Till Kamppeter <till.kamppeter@gmail.com>
+
+	* foomatic-ppdfile.1.in: Corrected mark-up in the man page for
+	  foomatic-ppdfile (Thanks to Eric Raymond for his man page
+	  verification bot).
+
+2006-11-09  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-combo-xml.c, foomatic-ppdfile.in, lib/Foomatic/DB.pm:
+	  Let the listing of auto-generatable PPD files for CUPS 1.2
+	  ("foomatic-ppdfile list") not contain entries for combos of
+	  printers with driver entries with a ready-made PPD file, as
+	  these PPD files are usually listed by CUPS directly.
+
+2006-09-25  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* Makefile.in: Added forgotten DESTDIR (upstream merge from Debian 
+	  patch).
+
+	* foomatic-combo-xml.c: Several small stability fixes in the C code
+	  (upstream merge from Debian patch).
+
+	* foomatic-configure.in: If there is a user named "cupsys", switch
+	  the ownership of the PPD files to "cupsys", this way Ubuntu does
+	  not break on running CUPS as non-root. This does not affect
+	  other distributions (upstream merge from Debian patch).
+
+	* foomatic-printjob.in: Added help for the printer-specific
+	  options (upstream merge from Debian patch).
+
+	* foomatic-getpjloptions.8.in: Typo fix (upstream merge from
+	  Debian patch).
+
+	* foomatic-printjob.1.in: Text fixes, new help on printer options
+	  mentioned (upstream merge from Debian patch).
+
+2006-09-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-combo-xml.c, foomatic-ppdfile.in, lib/Foomatic/DB.pm:
+	  Let the listing of auto-generatable PPD files for CUPS 1.2
+	  ("foomatic-ppdfile list") not contain entries for combos of
+	  printers with driver entries which do not have a command line
+	  prototype (these indicate only that the printer/driver combo
+	  works, but do not produce PPD files). Allow defining valid
+	  printer/driver combos also by only defining the driver in the
+	  "<drivers>" section of the printer entry. So for a printer with
+	  ready-made PPD it is enough to add a driver entry with link to
+	  the PPD in its "<drivers>" section so that "foomatic-ppdfile"
+	  lists and returns the PPD.
+
+2006-07-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: For get_javascript2() building the printer
+	  menu based on pre-read data now also printer IDs can be supplied
+	  instead of deriving the IDs from the model names.
+
+2006-07-16  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* Makefile.in: Fixed missing dependency at "man:" target in
+	  the Makefile (Gentoo bug #138635)
+
+2006-07-11  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Fixed bug in the decoding of UI strings in
+	  the PPDs, only hex-encoded characters were decoded correctly
+	  (Thanks to Florian Festi from Red Hat for this patch).
+	
+2006-07-10  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-extract-text.in: Generate .po files from the UI strings
+	  in the currently installed Foomatic database (Thanks to Florian
+	  Festi from Red Hat for this script).
+
+	* lib/Foomatic/DB.pm: When reading PPD files extract the UI strings
+	  always in UTF-8, taking into account the encoding of the PPD file
+	  (Thanks to Florian Festi from Red Hat for this patch).
+
+	* *: Way to many files were marked executable. Fixed.
+
+2006-06-27  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: get_javascript2() can now also build the
+	  script based on pre-read printer data. This avoids duplicate
+	  reading of the Foomatic database and allows adding of extra
+	  printers which are not in the Foomatic XML database (for example
+	  new user-supplied entries).
+
+2006-05-23  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Eliminated a warning.
+
+2006-05-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* configure.ac: Do never use CUPS commands "enable-cups",
+	  "disable-cups", "accept-cups", "reject-cups", even if
+	  executable files with these names are available. CUPS has only
+	  one executable for these tasks and recognizes by the
+	  executable/link name what to do. So it only accepts execution
+	  with one of the names "enable", "disable", "accept", "reject".
+
+	* lib/Foomatic/DB.pm: When generating PPD files from Foomatic
+	  XML data and the option XML files contain "<arg_order>" tags
+	  with different values, the options get ordered by the 
+	  "<arg_order>" values (within their group). This way manually
+	  defining the presentation order of the options gets possible.
+	  Fixed also a buglet in the setting of the default of numerical
+	  options.
+
+	* foomatic-ppdfile.in: Removed "use strict;" due to an
+	  incompatibility with the "getopts()" Perl function.
+
+2006-05-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Improved group name parsing in the PPD
+	  files, now the group names of the Gutenprint CUPS raster
+	  PPDs are read out correctly. Do not sort the options any more
+	  when reading PPD files.
+
+2006-05-19  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-ppdfile.in: Let PPD file generation with cups-driverd
+	  also work if the driver name contains dashes (as in Gutenprint),
+	  added "use strict;", let debug output and error messages have
+	  prefixes to be correctly categorized in the CUPS error_log.
+
+2006-04-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in: Added support for reading additional items
+	  from the /etc/cups/printers.conf file: Print quotas, individual,
+	  printer sharing, error and operation policies.
+
+2006-04-21  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Eliminated some warnings
+
+	* foomatic-configure.in: Added new URIs to URI overview in
+	  header comments, let beh wrapper backend also not be
+	  applied to HPLIP fax queues (URI: "hpfax:/...").
+
+2006-04-19  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-ppdfile.in, lib/Foomatic/DB.pm, configure.ac,
+	  Makefile.in, makeDefaults.in, USAGE, README: Added support for
+	  on-the-fly PPD file generation by the CUPS 1.2 cups-driverd.
+
+	* USAGE: Update HPOJ -> HPLIP.
+
+2006-02-28  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in: Treat a missing /etc/cups/printers.conf
+	  as an empty file (CUPS 1.2 allows printers.conf missing for no
+	  local printers). Suppress warnings if the list of available CUPS
+	  queues is requested but no default printer set.
+
+2006-01-17  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Generate PPD files correctly where an
+	  enumerated-choice option has "0" as default (thanks to Tim
+	  Waugh from Red Hat for the patch).
+
+	* foomatic-cleanupdrivers.in: Do not try to delete the "." file in
+	  the driver-XML-file directory (thanks to Tim Waugh from Red Hat
+	  for the patch).
+
+2006-01-09  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Let PPD files with "*CloseGroup" without
+	  group name being parsed correctly, eliminate warning about
+	  uninitialized variable when a PPD file is built out of Foomatic
+	  data.
+
+2006-01-06  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* configure.in, configure.ac: Renamed configure.in to
+	  configure.ac, to make the package working with the current
+	  versions of aclocal and autoconf.
+
+	* foomatic-cleanupdrivers.in: Delete also driver XML files
+	  without "<prototype>" tags at all, as they also do not
+	  contain a driver command line prototype.
+
+2005-10-26  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Fix on support for gzipped PPDs.
+
+2005-10-25  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Added support for gzipping the custom
+	  PPD files without needing to adapt the links in the printer
+	  XML files.
+
+2005-10-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-perl-data.c, foomatic-configure.in,
+	  foomatic-ppdfile.in, foomatic-compiledb.in, lib/Foomatic/DB.pm:
+	  Let the Foomatic tools use custom-made PPD files if they are
+	  linked in the printer XML file and available in the local
+	  Foomatic database.
+
+2005-09-13  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Made "translate_printer_id()" not crashing
+	  when it is called with a weird printer ID.
+
+2005-08-23  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-combo-xml.c: Added the links to the ready-made PPD
+	  files for all drivers to the overview output. Eliminated
+	  compiler warnings.
+
+	* foomatic-perl-data.c: Eliminated compiler warnings.
+
+2005-08-15  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in: Added support for the new "beh"
+	  (Backend Error Handler for CUPS) backend (included
+	  in foomatic-filters now).
+
+2005-08-05  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-perl-data.c: Added support for "<ppd>" tags in the
+	  "<drivers>" list of the printer XML files. This is needed
+	  to provide ready-made PPDs for arbitrary drivers on the
+	  linuxprinting.org site.
+
+2005-08-04  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in: Fixed bug of multiple "tc=..." items in
+	  an /etc/printcap entry of LPRng not being supported.
+
+2005-07-12  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* READNE: Updated links to Adobe PostScript specifications.
+
+2005-05-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in, lib/Foomatic/DB.pm: Added support for
+	  PPD file names with spaces (Mandriva bug #16172).
+
+2005-05-11  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* README: Corrected character list in "<arg_allowedchars>" in the
+	  example string option XML file. Improved instructions for
+	  "<arg_allowedchars>".
+
+2005-02-23  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in: Fixed bug of old non-Foomatic PPD not
+	  overtaken when applying "foomatic-configure" to a queue without
+	  specifying a PPD or a printer/driver pair.
+
+	* lib/Foomatic/DB.pm: When modifying PPD defaults for boolean
+	  options "0" or "1" was written into the PPD file and not
+	  "False" or "True".
+
+2005-01-28  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* makeDefaults.in, foomatic-cleanupdrivers.in: Allow use of an
+	  alternative Foomatic database location specifying it with the
+	  FOOMATICDB environment variable.
+
+	* Makefile.in: Added foomatic-cleanupdrivers to be installed into 
+	  /usr/sbin, fixed "testing-clean" target.
+
+	* foomatic-cleanupdrivers.in: Use default database location from
+	  Defaults.pm.
+
+2005-01-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Fixed Tim Waugh's fix. It made an
+	  "@@IEEE1284@@" appear in the PPD file when for a printer
+	  no autodetection info was supplied. This made CUPS not
+	  accepting the PPD.
+
+2005-01-21  Tim Waugh <twaugh@redhat.com>
+
+	* lib/Foomatic/DB.pm: Fixed "uninitialized value" warning (RH
+	  bug #145605).
+
+2004-11-30  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in, foomatic-ppdfile.in,
+	  foomatic-compiledb.in, lib/Foomatic/DB.pm: Let Foomatic not
+	  generate PPD files with blank "*FoomaticRIPCommandLine" entry.
+
+2004-09-14  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Tagged CVS for the release of foomatic-db-engine 3.0.2. 
+	  Tag name: "foomatic-db-engine-3_0_2".
+
+	* README, USAGE: Updated for version 3.0.2.
+
+2004-07-30  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Use the manufacturer as defined in the
+	  Foomatic database and not the one from the IEEE-1284
+	  auto-detection ID string for the "*Manufacturer: ..." tag of the
+	  PPD files, as in the IDs the manufacturer names
+	  often do not comply with the Adobe specs (as "Hewlett-Packard",
+	  here "HP" has to be used).
+
+2004-07-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* configure.in: Replaced mechanism for auto-detecting libxml(2).
+
+2004-07-13  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* README: Updated link to Adobe's PostScript specifications.
+
+2004-03-28  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* README, README.build-foomatic-filters-ppds, USAGE,
+	  foomatic-kitload.8.in, foomatic-preferred-driver.in,
+	  foomatic-printermap-to-gimp-print-xml.in, lib/Foomatic/DB.pm:
+	  Replaced "GIMP-Print" by "Gimp-Print".
+
+2004-03-24  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Added entries to sortargs() function to
+	  support drivers with RGB processing and Gimp-Print 5.0.x support
+	  for new CMYRBK (additional red and blue ink) printers.
+
+	* foomatic-perl-data.c, foomatic-combo-xml.c: Compatibility fixes
+	  for newest gcc.
+
+2004-03-04  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Read paper size with unit out of the driverval
+	  (needed for Omni), restrict paper sizes in the PPD to 2 digits
+	  after the decimal point.
+
+2004-02-27  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Eliminated another Perl warning.
+
+2004-02-18  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Tagged CVS for the release of foomatic-db-engine 3.0.1. 
+	  Tag name: "foomatic-db-engine-3_0_1".
+
+	* README, USAGE: Updated for version 3.0.1 final.
+
+2004-02-17  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Eliminated some Perl warnings.
+
+2004-02-14  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-ppdfile.in: Accept "-t <type>" option and ignore it,
+	  for compatibility with the former "foomatic-datafile".
+
+2004-01-24  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Tagged CVS for the release of foomatic-db-engine 3.0.1rc2. 
+	  Tag name: "foomatic-db-engine-3_0_1rc2".
+
+	* README, USAGE: Updated for version 3.0.1rc2.
+
+2004-01-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in: Eliminated warnings which appeared since
+	  the insertion of "use strict;". Thanks to the hint from
+	  Marcelo Ricardo Leitner (mrl at conectiva dot com dot br).
+
+2004-01-22  Tim Waugh  <twaugh@redhat.com>
+
+	* lib/Foomatic/DB.pm (perltoxml): New function.
+
+2003-12-19  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* configure.in, Makefile.in, 
+	  foomatic-printermap-to-gimp-print-xml.in: Added script to
+	  update the driver entry of Gimp-Print with the printer list
+	  of the src/foomatic/foomatic-printermap file of the
+	  Gimp-Print source tarball (Gimp-Print 4.2.x or later).
+
+	* Makefile.in: Make mkinstalldirs executable (Thanks to Florian
+	  Diesch <diesch@spamfence.net>).
+
+	* Makefile.in: Removed $(DESTDIR) from "make" calls for the Perl
+	  libraries (Thanks to Florian Diesch <diesch@spamfence.net>).
+
+2003-12-17  Tim Waugh <twaugh@redhat.com>
+ 
+	* Makefile.in: Use relative symlink, not absolute.
+
+2003-11-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Tagged all files of the repository with "foomatic-3_0-bp",
+	  started stable branch "foomatic-3_0-branch".
+	
+2003-11-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* README: Added section that CUPS raster drivers can now be used
+	  with every spooler.
+
+2003-11-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Tagged CVS for the release of foomatic-db-engine 3.0.1rc1. 
+	  Tag name: "foomatic-db-engine-3_0_1rc1".
+
+	* README, USAGE: Updated for version 3.0.1rc1.
+	
+2003-11-19  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* configure.in: Do not do a test run of GhostScript in the /def/fd/3
+	  check if there is no GhostScript available.
+
+2003-10-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* configure.in: Added /usr/local/libexec to LIBSEARCHPATH for *BSD
+	  compatibilty. Thanks to Sebastian Horzela (sh at horzela dot
+	  com).
+	
+	* configure.in: Replaced a "==" by "=" in a "test" expression (*BSD
+	  compatibility).
+
+	* configure.in, Makefile.in, README.build-foomatic-filters-ppds:
+	  Fixes from Patrick Powell.
+
+2003-09-13  Patrick Powell <papowell@lprng.com>
+
+	* foomatic-configure:
+	  set 'use strict' and perl -w options - cleaned up
+	  compilation and usage errors exposed by adding these
+	  options.
+
+	  modified the LPRng setup to be consistent with the new
+	  or latest version of foomatic-rip and LPRng.
+
+	  fixed several other entries that were using values that
+	  either were not initialized or were the wrong variable
+	  name.  This appears to be the result of a cut-and-paste
+	  where the author did not modify all of the variable names
+	  in the pasted area.
+
+	  Added warnings about security loopholes when using the
+	  smbclient and nmbprint facilities.
+
+	  Fixed up missing $DESTDIR in Makefile.in
+
+	* lib/Foomatic/DB.pm
+	  added 'use strict' to Foomatic::DB.pm and then did
+	  editting for syntax cleanup.  Mostly adding my to
+	  'for $x' loops, i.e. - 'for my $x'
+	  Cleaned up a performance hit by passing reference to
+	  array rather than copying array.
+
+	* foomatic-ppdfile:
+	  Added -A, -P match options to display information
+
+	  If the PPD file does not exist, error message is printed
+	  and exits with nonzero error code.  Also tidied up
+	  error messages and help messages.
+
+	  If the driver (-d driver) is not specified or is blank,
+	  use the default driver for the printer.
+
+	  Sanity check the printer and driver names against the
+	  database.
+
+	  Fixed up the foomatic-ppdfile.1 man page and added the
+	  -A and -P options.
+
+	* Makefile - make dist-clean now removes ppd subdirectory
+
+	* configure - added check for GhostScript and security
+	  loophole in GhostScript.  Modified the uses of
+	  AC_PROG_PATH to avoid a problem with shell variable
+	  expansion.
+
+	* foomatic-getpjloptions:  changed use of 'echo -ne'
+
+	* foomatic-addpjloptions now handles strings, also defaults
+	  with ? characters and string values.  
+	  -s   - writes options to a single file
+	  -i   - does only IMPORTANT options
+	  -a   - does ALL options found in PJL information
+	         (except readonly)
+	  -q   - reads the PJL file and produces a quick summary
+               (debugging)
+	       
+	* man pages - fixed up several of the man pages to agree with
+	  the programs.  More editting is needed.
+
+2003-09-07  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Fixed bug of the getpapersize() function
+	  returning the size of "Letter" when requesting the sixe of
+	  "Half Letter".
+
+2003-08-27  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in: When using "foomatic-configure -P -r"
+	  recognize implicit classes as remotely defined printer (for
+	  now this works only for root).
+
+2003-08-26  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in: Let the information about the default
+	  printer be included in the output of "foomatic-configure -P".
+	  This makes the initial reading of configuration information by a
+	  frontend much faster. The information will by in
+	  $QUEUES[x]->{'queuedata'}{'default'}, which is 1 for the default
+	  queue and 0 for the other queues. Added support for the "-r"
+	  option with "foomatic-configure -P"
+	  ($QUEUES[x]->{'queuedata'}{'remote'} field indicates remote
+	  queues). Retrieve the "Location" information of remotely defined
+	  CUPS printers.
+
+2003-08-24  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Fixed reading make and model name of the
+	  printer from the PPD file to also work with the new Foomatic
+	  PPDs ("*ShortNickName" linited to 32 characters and no comma
+	  before the driver name).
+
+2003-08-14  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-compiledb.in: Let PPD pre-compilation process not choke
+	  on a driver entry with a non-existing printer (for example
+	  mistyped) in its list.
+
+2003-08-12  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-combo-xml.c: Pre-initialized pointers in the loadidlist()
+	  function (thanks to Gwenole Beauchesne from MandrakeSoft).
+
+2003-08-07  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in: HPOJ after 0.9 needs two slashes instead
+	  of one in CUPS device URIs ("ptal://..."). Let
+	  foomatic-configure do the correct thing independent whether the
+	  user enters a "ptal" URI with one or two slashes.
+
+2003-08-03  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm, foomatic-ppdfile.in, foomatic-configure.in,
+	  USAGE: Added possibility to limit the length of GUI strings
+	  ("translations") in the generated PPD files to 39 characters,
+	  so that the CUPS PostScript driver for Windows does not choke on
+	  them.
+	
+2003-08-01  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm, README: Made it possible to define nested
+	  composite options.
+
+2003-07-21  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* README, configure.in, Makefile.in, foomatic-ppdload.in,
+	  foomatic-ppdload.8.in: Removed the "foomatic-ppdload" tool as
+	  generating XML data from PPD files is not needed any
+	  more. "foomatic-rip" works also with manufacturer-supplied
+	  PostScript PPDs.
+	
+	* foomatic-perl-data.c: Let URL of manufacturer PPD also appear
+	  in printer/driver combo output.
+
+2003-07-19  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-perl-data.c: Fixed output of printer language info.
+
+2003-07-17  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Added "Folio" and "Env10" paper sizes to
+	  paper size list.
+
+2003-07-02  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-perl-data.c: Added stuff needed for a web form to enter
+	  printer data.
+
+2003-06-26  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* configure.in, makeMan.in: Support for IRIX.
+
+2003-06-25  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Remove "," and "+" from the "*NickName" and
+	  "*ShortNickName" to make the PostScript drivers of Windows happy,
+	  fix on auto-abbreviation of "*ShortNickName".
+
+2003-05-09  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* README: Lots of small corrections.
+
+2003-04-30  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* README: Updated link to Adobe's PostScript documentation.
+
+2003-04-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Tagged CVS for the release of foomatic-db-engine 3.0.0. 
+	  Tag name: "foomatic-db-engine-3_0_0".
+
+	* README, USAGE, lib/Foomatic/DB.pm: Updated for version 3.0.0.
+
+2003-04-27  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* Makefile.in: Stop if an error occurs when building the PPD package.
+
+2003-04-25  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-replaceoldprinterids.in: Changed default pattern on the
+	  right side of the printer ID to "(?!\d)", which means that there
+	  should be no further digit on the right. This is the right
+	  choice in nearly every case.
+
+	* foomatic-compiledb.in: Make "foomatic-compiledb" working with
+	  both old numerical and new clear-text printer IDs.
+
+2003-04-23  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Auto-abbreviation of "*ShortNickName"s in
+	  the PPD files so that they are not longer than 31 characters to
+	  fulfill the Adobe specs.
+
+2003-04-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Tagged CVS for the release of foomatic-db-engine 3.0.0rc2. 
+	  Tag name: "foomatic-db-engine-3_0_0rc2".
+
+	* README, USAGE, Foomatic-Devel-Ideas.txt: Added missing
+	  substitution for ampersand in XML files, updated for version
+	  3.0.0rc2.
+	
+2003-04-21  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-perl-data.c, lib/Foomatic/DB.pm, foomatic-configure.in:
+	  added restriction for allowed strings by means of lists of
+	  allowed characters (XML: '<arg_allowedchars>...</arg_allowedchars>',
+	  PPD: '*FoomaticRIPOptionAllowedChars <option>: "..."') and Perl
+	  regular expressions (XML: '<arg_allowedregexp>...
+	  </arg_allowedregexp>',
+	  PPD: '*FoomaticRIPOptionAllowedRegExp <option>: "..."'). The
+	  allowed characters are checked by a '/^[...]*$/' expression in
+	  the Perl scripts, so ranges with '-', forbidden characters with
+	  a leading '^', or special characters as '\w', '\d', '\x07', ...
+	  are allowed. Regular expressions are applied via a '/.../'
+	  expression. These restrictions are done for security reasons, to
+	  avoid for example a string like "|| rm -rf * ||" in a command line
+	  option.
+
+	  The string 'None' is always mapped to the empty string,
+	  as PPD files and the command of some spoolers do not accept an
+	  empty string as argument value. For the default value of a string
+	  option always an enumerated choice in the PPD file is created,
+	  should the string contain characters which are not allowed in
+	  choice names on PPD files ir not easy to enter on the command line,
+	  the offending characters are replaced by '_' in the choice name,
+	  the 'driverval' will still use the original string.
+
+	  Several bug fixes done for the string options.
+	
+2003-04-13  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Tagged CVS for the release of foomatic-db-engine 3.0.0rc1. 
+	  Tag name: "foomatic-db-engine-3_0_0rc1".
+
+	* README, USAGE: Updated for version 3.0.0rc1.
+	
+	* README: Documentation for string and password options.
+
+	* USAGE: Documentation for applying option settings only to
+	  selected pages.
+
+2003-04-12  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-perl-data.c, lib/Foomatic/DB.pm, foomatic-configure.in:
+	  Introduced string and password options.
+
+2003-04-02  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-perl-data.c, lib/Foomatic/DB.pm: Introduced "Forced
+	  composite options", composite options where the user cannot set
+	  the individual member options, but only the composite option
+	  (the user is forced to use the composite option). This allows
+	  options acting at two or more places, for example a "PageSize"
+	  option for a driver which is a filter translating GhostScript
+	  bitmap output to the printer's language. One lets one member
+	  option be an option inserting PostScript code for the page size
+	  into the PostScript input data stream, and another member option
+	  insert the correct bitmap size into the filter's command
+	  line. The user sees only the composite option and sets the paper
+	  size with it as usual. In the XML database, forced composite
+	  options are defined as usual composite options, only difference
+	  is that in the XML entry for the composite option
+	  "<arg_forced_composite>" instead of "<arg_composite>" is used.
+
+	* README: Documented forced composite options.
+
+2003-03-30  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-combo-xml.c: Allow printer/driver combo XML generation
+	  also when the driver or option XML files still use old numerical
+	  printer IDs (important for third-party drivers).
+
+2003-03-28  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-replaceoldprinterids.in: Script to replace references
+	  to old numerical PostGreSQL (or otherwise obsolete) printer IDs
+	  by the current ones.
+
+	* configure.in, Makefile.in: Added build instructions for new
+	  "foomatic-replaceoldprinterids" script.
+
+	* README: Documentation for new "foomatic-replaceoldprinterids"
+	  script.
+
+	* USAGE: Adapted for new printer IDs, bug fix in example for PDQ,
+	  raised version to 3.0.0rc1.
+
+2003-03-27  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-nonumericalids.in: Script to change the old numerical
+	  PostGreSQL printer IDs in the installed Foomatic database to new
+	  clear-text printer IDs.
+
+	* configure.in, Makefile.in: Added build instructions for new
+	  "foomatic-nonumericalids" script.
+
+	* README: Documentation for new "foomatic-nonumericalids" script,
+	  raised version to 3.0.0rc1.
+
+	* foomatic-configure.in, foomatic-ppdfile.in, lib/Foomatic/DB.pm:
+	  Added facility to translate old numerical printer IDs to the new
+	  clear-text IDs.
+
+2003-03-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Tagged CVS for the release of foomatic-db-engine 3.0.0beta2. 
+	  Tag name: "foomatic-db-engine-3_0_0beta2".
+
+	* README, USAGE: Updated for version 3.0.0beta2.
+	
+2003-03-10  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in: Fixed bug of USB device files names not
+	  correctly sorted by "cups_generate_usb_device_lists()" function.
+	  This cause wrong make/model-related URIs to be assigned to the
+	  device files (at least with three or more connected USB
+	  printers).
+
+2003-03-05  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: completed support for
+	  "FoomaticRIPDefault..." keywords in numerical options (see
+  http://www.linuxprinting.org/pipermail/foomatic-devel/2003q1/001250.html).
+
+	* README: Documented "FoomaticRIPDefault..." PPD keyword.
+
+2003-02-25  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: "<ppdentry>"s are now cleaned up before
+	  insertion into the PPD file. Leading and trailing white space
+	  is removed from every line and also leading and trailing blank
+	  lines are removed.
+
+2003-02-24  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm, foomatic-perl-data.c: Added support for
+	  "<ppdentry>" tags to add arbitrary extra lines to the PPDs,
+	  added support for "<general>" and "<ieee1284>" tags in the
+	  "<autodetect>" section of a printer entry, Added "*1284DeviceID"
+	  keyword to generated PPDs, made disrinction between color and
+	  bw printers in the generated PPD files, fixed "*ModelName"
+	  to comply with PPD specs, added "FoomaticRIPDefault..." keywords
+	  to numerical options (see
+  http://www.linuxprinting.org/pipermail/foomatic-devel/2003q1/001250.html).
+	  
+2003-02-23  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-filters-ppds-install, foomatic-filters-ppds-README,
+	  README.build-foomatic-filters-ppds, Makefile.in: Added facility
+	  to build package with all PPD files and the filters.
+
+	* foomatic-compiledb.in: Added permissions to "mkdir" function call,
+	  so that "foomatic-compiledb" also works with Perl 5.0.x.
+	
+2003-02-03  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Tagged CVS for the release of foomatic-db-engine 3.0.0beta1. 
+	  Tag name: "foomatic-db-engine-3_0_0beta1".
+
+	* README, USAGE, Foomatic-Devel-Ideas.txt: Updated for version
+	  3.0.0beta1.
+	
+2003-01-31  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Fixed bug in the checking for missing long
+	  names/translations in PPD files.
+
+2003-01-30  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in: Fixed bug of "foomatic" flag in the Perl
+	  data structure being set when the PPD is non-Foomatic.
+	
+2003-01-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm, foomatic-configure.in: Improved sorting of
+	  options, make PPD parser sort the options when the PPD file is
+	  non-Foomatic, Automatically fill in longnames/translations which
+	  are missing in the PPD file, fixed stripping of "dossy" line
+	  ends in PPD files, foomatic-configure can now also generate a
+	  Perl data structure when a PPD file and not a Foomatic
+	  printer/driver combo is specified on the command line, the Perl
+	  output which foomatic-configure generates for Foomatic
+	  printer/driver combos contains the composite options now.
+	
+2003-01-28  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* COPYING: Added file containing the GPL.
+
+	* lib/Foomatic/DB.pm: When parsing the PPD file with the
+	  "ppdtoperl()" fonts, "ImageableArea", "PaperDimension", ...  do
+	  not entwr as options in the Perl data structure any more. In
+	  addition, the parser puts also information about option groups
+	  into the structure.
+
+	* foomatic-configure.in: Made foomatic-configure handle
+	  "usb://<make>/<model>" URIs correctly.
+	
+2003-01-26  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in, lib/Foomatic/DB.pm, configure.in,
+	  Makefile.in, makeDefaults.in, USAGE: Added support for
+	  compressed PPD files ("file.ppd.gz") supplied with the "--ppd"
+	  option of foomatic-configure.
+
+	* lib/Foomatic/DB.pm: For Foomatic PPDs let 'make' and 'model'
+	  fields be put into the Perl data structure generated by
+	  ppdtoperl().
+	
+2003-01-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in: Made URIs for printer connections ("-c"
+	  option) absolutely compatible to CUPS (Now one can use
+	  "parallel:...", "usb:...", and "serial:..."). Automatic
+	  conversion of USB URIs to URIs referring to manufacturer, model,
+	  and serial number of the printer under CUPS 1.1.17 or newer.
+	  Support for the MTink daemon from http://xwtools.automatix.de/.
+	
+	* lib/Foomatic/DB.pm: Improved sorting of option choices. Made it
+	  faster and removed the long list of resolutions. Let the
+	  "normalizename()" function also support strings with more than
+	  one number and with floating point numbers.
+
+	* configure.in, Makefile.in, makeDefaults.in: Added paths for
+	  the new features of "foomatic-configure".
+
+	* README, USAGE: Documented the new features of
+	  "foomatic-configure".
+
+2003-01-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Fixes for Adobe compliance of the generated
+	  PPD files: In "*Product: ..." IEEE model name has to be in
+	  parantheses, "*ShortNickName: ..." must be different for all PPD
+	  files, driver name added to achieve this, "*ShortNickName: ..."
+	  entry has to come before "*NickName: ...".
+
+	* lib/Foomatic/DB.pm, foomatic-perl-data.c: Now the "*Nickname"
+	  and "*ModelName" entries of the PPD file get marked when the
+	  recommended driver is used.
+	
+2003-01-07  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Fixed a typo in the calculation of the
+	  values in the "*ImageableArea" lines of the PPD files.
+
+2003-01-05  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-perl-data.c: Support for margin settings in a printer
+	  entry of a driver XML file (combo-specific margins).
+
+	* foomatic-combo-xml.c: Bigger buffer for printer entry of
+	  driver XML files (needed for margin info, especially of
+	  Gimp-Print driver).
+
+	* lib/Foomatic/DB.pm: Unprintable margins as defined in the XML
+	  files are used for the "*ImageableArea" and "*HWMargins" lines in 
+	  the PPD files now.
+	
+2003-01-04  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-perl-data.c: Parse data about unprintable margins in
+	  printer, driver, and combo XML files.
+
+2002-12-31  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Allow boolean options to be used as member
+	  options for composite options. To add the "From<Composite>"
+	  choice, booleanm member options will be implemented as
+	  enumerated choice options in the PPD file. In the
+	  "<ev_driverval>" entries in the XML file the boolean options
+	  have to be expressed as "Option=true", "Option=false", "Option"
+	  (means "true"), or "noOption" (means "false").
+	
+2002-12-19  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Tagged CVS for the release of foomatic-db-engine 2.9.1. 
+	  Tag name: "foomatic-db-engine-2_9_1".
+
+	* README, USAGE, Foomatic-Devel-Ideas.txt: Updated for version
+	  2.9.1.
+	
+2002-12-17  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Allow settings for options which do not
+	  exist for the current printer/driver combo in the choices of
+	  composite options. These will be deleted from the composite
+	  option in the final PPD file. With this it gets much easier
+	  to set up the composite option, for example the one for the
+	  "pxlmono" driver where some printers have the PJL option
+	  "Economode" and some not. So one simply puts in settings for
+	  "Economode" and these are only used for the appropriate
+	  printers. So much less constraints are needed in the XML
+	  file for the composite option.
+	
+2002-12-15  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Let "getppd()" put the member options of a
+	  composite option into a main group and not into a subgroup of
+	  the group where the composite option is located. Most frontends
+	  do not support subroups.
+
+2002-12-14  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: use longname of composite option in the
+	  longnames of the "From<composite>" choices in the member options
+	  (ex: "FromPrintoutMode" -> "Controlled by 'Printout Mode'").
+
+2002-12-11  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Modified keyword lists for sorting options
+	  and choices according to the new agreement that the composite
+	  option for pre-made configurations has the name "PrintoutMode"
+	  and the choices "Draft", "Normal", "High", "VeryHigh", "Photo",
+	  with the modifiers ".Gray", and ".Mono".
+
+2002-12-10  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Improvements for composite options.
+
+	  Given highest priority in the sort order to the option name
+	  "DocumentType", the name of the composite option forseen to
+	  give quick access to the most important configurations.
+
+	  if the translation (longname) for the name of an option, a
+	  group, or a choice is missing, it will be generated from
+	  the shortname, using the new function "longname()".
+
+	  Do not take into account enumerated choice options with only one
+	  choice when setting option group definitions in the PPD file.
+
+	  Fixed closing of subgroups when the PPD file ends (there was
+	  "*CloseGroup", not "*CloseSubGroup").
+
+	  Suppress composite options on the "Execution details" web pages.
+	
+2002-12-09  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm, foomatic-perl-data.c: Introduced support for
+	  composite options.  The "genppd()" now does all steps to
+	  correctly set up a composite option in the PPD file (Marking
+	  composite option appropriately, letting its "code" be put into
+	  the PostScript stream before the code of all members, putting
+	  members in a group named after the composite option, add
+	  "Controlled by '<Composite>'" setting to the
+	  members). Limitations for now are:
+
+	   - Composite options must be enumerated choice (will most
+	     probably always be the case).
+
+	   - Members must be enumerated choice (one could later add
+	     boolean, then "genppd()" would need to convert that
+	     boolean options into enumerated choice, that they can
+	     have the additional choice).
+
+	   - Members can be every execution style except composite
+	     (otherwise the option groups would get messy).
+
+	  The second and the third limitation only concern the PPD file
+	  generation with the "genppd()" function, not the job processing
+	  with "foomatic-rip".
+	
+2002-12-06  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Let parantheses being removed in the
+	  suggested file names for the PPDs.
+
+2002-12-05  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-preferred-driver.in: Added the "gdi" and "pbmtozjs"
+	  drivers to the ranking in "foomatic-preferred-driver", tolerate
+	  not having a preferred driver when there is a "Paperweight" with
+	  drivers assigned to it.
+	
+2002-12-04  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Tagged CVS for the release of foomatic-db-engine 2.9.0. 
+	  Tag name: "foomatic-db-engine-2_9_0".
+	
+2002-12-03  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm, foomatic-perl-data.c: First preparations
+	  for collective options, let these options being skipped for
+	  2.9.0 release, so that collective options can be added to the
+	  database before 2.9.1 without 2.9.0 breaking. Let options with
+	  unknown execution style being skipped in general.
+	
+2002-11-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Tagged CVS for the release of foomatic-db-engine 2.9.0pre1. 
+	  Tag name: "foomatic-db-engine-2_9_0pre1".
+	
+	* README: Added list of implemented and planned features for
+	  Foomatic 3.0.
+
+	* lib/Foomatic/DB.pm: Fixed calls of "dossy" line ends removal
+	  ("undossify();") when reading the PPD file and quoted the
+	  asterisk in "/^\*End/".
+
+2002-11-28  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* Makefile.in, configure.in: Fixed connection to the other Foomatic
+	  packages in both regular and "inplace" installation.
+
+	  Insert absolute paths for the Perl library and database locations
+	  in the "inplace" installation.
+
+	  Set link to "foomatic-rip" into the source directory when
+	  installing "inplace", so one can start all programs from
+	  one directory.
+
+	  Let files of "foomatic-templates" directory be installed into
+	  /usr/share/foomatic/templates, so that "foomatic-addpjloptions"
+	  also works with a regular installation (worked only "inplace"
+	  before).
+
+	* makeDefaults.in: Removed paths for old src/*omatic filters,
+	  added path for "foomatic-rip" and for PPR daemon
+	  ("foomatic-configure" needs the daemon to check the PPR version).
+
+	  Insert absolute paths for the database location ($libdir) in the
+	  "inplace" installation.
+
+	* lib/Foomatic/DB.pm: Improved header text of the PPD files:
+	  GPL, Foomatic 2.9 URL, "foomatic-rip", download instructions.
+
+	  When an option has only one choice and therefore is described
+	  only with "*Foomatic" keywords in the PPD file, the "*End" was
+	  not inserted when the option code needed more than one line.
+	
+	* foomatic-configure.in: Used path from Defaults.pm for calls of
+	  "foomatic-rip" when generating PDQ driver files.
+
+	* foomatic-addpjloptions.8.in: Updated path in "FILES" section.
+
+	* README, USAGE, TODO: Updated pacckage documentation for the
+	  Foomatic 2.9.0 release.
+
+	* etc/printcap: Removed this file, it is not needed for the
+	  package.
+	
+2002-11-27  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Removed the generator functions for the
+	  old Perly Foomatic 2.0 PPDs, old-style CUPS PPDs, lpdomatic/
+	  directomatic printer description files, PDQ driver files,
+	  and MagicFilter printer definition files.
+
+	  Added functions to parse the new Perl-free Foomatic 2.9 PPD
+	  files, to read out and update the option defaults and the
+	  postpipe.
+
+	  In the "Execution Details" web page generation taken into
+	  account that foomatic-rip now allows the same spot letter ("%A",
+	  "%B", ...) being more than once in the prototype so that option
+	  settings can act on several points of the command line.
+
+	* lib/Foomatic/GrovePath.pm: Removed because it is not needed any
+	  more.
+
+	* foomatic-configure.in: Adapted to the new concept of
+	  foomatic-rip and PPD files. Removed the generation of combo XML
+	  files in /etc/foomatic/.
+
+	* foomatic-compiledb.in: Removed support for all output file types
+	  except PPD and XML.
+
+	* foomatic-datafile.in, foomatic-datafile.1.in: Removed, we have
+	  foomatic-ppdfile as replacement.
+
+	* foomatic-ppdfile.in, foomatic-ppdfile.1.in: Replacement for
+	  foomatic-datafile, produces only PPD files, no other file types
+
+	* foomatic-compiledb.1.in, foomatic-configure.1.in: Updated man
+	  pages.
+
+	* Makefile.in, configure.in: Adapted to the name change
+	  "foomatic-datafile" -> "foomatic-ppdfile".
+	
+2002-11-14  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Fixed PostScript code for custom paper
+	  sizes.
+
+2002-11-07  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Let "foomatic-rip" instead of "cupsomatic"
+	  being used as CUPS filter defined in the "*cupsFilter" line of
+	  the new PPD files.
+
+2002-11-03  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Fixed small bug in PPD generation correcting
+	  a "CmdLine" keyword, added some comments.
+	
+2002-10-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Do not add "*VariablePaperSize: False" to
+	  the PPD file when variable page sizes are supported.
+
+	* lib/Foomatic/DB.pm: Encoding of option code: When splitting long
+	  lines, mark the end with "&&" to distinguish between split lines
+	  and newlines. Make colon and opening quotes of a PPD line with
+	  code always being in the same line as the keyword.
+
+2002-10-28  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-datafile.in: Changed meaning of the "-t" settings:
+	  "cups" produces a PPD-O-Matic PPD now and "cupsold" the old
+	  CUP-O-Matic PPD. All other choices behave the same as before.
+	  This leads to the KDE Printing Manager generating PPD-O-Matic
+	  PPDs.
+
+	* foomatic-datafile.1.in: Updated man page to mention the choices
+	  "cupsold", "lprng", and "direct" for the "-t" option of
+	  "foomatic-datafile".
+	
+2002-10-23  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-preferred-driver.in: Added new drivers: "hpijs-rss",
+	  "lxm3200-tweaked", "lz11".
+
+2002-10-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: After Grant Taylor discovered a huge
+	  security hole in the original concept of the Perl-free PPDs,
+	  changed to a new concept. The former concept was that the
+	  GhostScript command line and all snippets to insert into the
+	  command line are stuffed into the PostScript data by the client
+	  (so having the PPD file on the server was not required). This
+	  leads to the case that every user can run arbitrary programs on
+	  the server. In the new concept the client stuffs only key/value
+	  pairs for the option settings into the PostScript data (as in
+	  Foomatic 2.0.x), the server will read the command line
+	  information from the PPD file and build the command line
+	  according to the settings in the PostScript data. The PPD files
+	  do not contain any important information in comment lines, so
+	  that if a program strips off the comments, nothing will break.
+	  All information is stored in Adobe-compliant PPD structures and
+	  only the really needed information is stored, with a minimum of
+	  redundancy, so the new PPDs are more easily customizable.
+
+2002-10-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Introduced new function "getppd()" which
+	  generates the new PPDs which do not need the Perl data eny more
+	  (see discussion with Johannes Meixner on the foomatic-devel list
+	  on linuxprinting.org), started option group support (use
+	  "<arg_group>group/subgroup</arg_group>" tag in "<arg_execution>"
+	  section of option XML files), option groups work, but there are
+	  no "longnames"/translations yet. Fixed some typos.
+
+	* foomatic-datafile.in: When one uses "foomatic-datafile -t ppd
+	  ...", the new Perl-less PPD files are generated.
+	
+	* lib/Foomatic/DB.pm: Fixed "*ImageableArea" and "*PaperDimension"
+	  in the PPD-O-Matic PPD files. It got broken when introducing the
+	  code for variable paper size support.
+
+2002-10-19  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-perl-data.c, lib/Foomatic/DB.pm: Support for custom
+	  page sizes. A choice named "Custom" in the "PageSize" option is
+	  considered as custom page size. Its "<ev_driverval>" should
+	  contain a placeholder "%0" for the page width and "%1" for the
+	  page height (both in points).  Alternatively the
+	  "<ev_driverval>" can contain two zeros ("0") from which the
+	  first will be replaced by the page width and the second by the
+	  page height. PPD files will get Adobe-complient for the custom
+	  page size support. So CUPS and the printing dialog of Mac OS X
+	  should have no problems with the custom paper size. Now custom
+	  paper sizes are available for all spoolers:
+
+	  CUPS: lpr -P huge -o PageSize=Custom.500x750cm bigposter.ps
+	  LPRng: lpr -P huge -Z PageSize=Custom.500x750cm bigposter.ps
+	  GNUlpr: lpr -P huge -o PageSize=Custom.500x750cm bigposter.ps
+	  LPD: lpr -P huge -JPageSize=Custom.500x750cm bigposter.ps
+	  PPR: ppr -P huge -F "*PageSize Custom" -i 500x750cm bigposter.ps
+	  PDQ: pdq -P huge -oPageSize_Custom -aPageWidth=500
+	           -aPageHeight=750 -oPageSizeUnit_cm bigposter.ps
+	  No spooler: directomatic -P huge -o PageSize=Custom.500x750cm
+	           bigposter.ps
+
+	* foomatic-perl-data.c, lib/Foomatic/DB.pm: Support for unique
+	  PC file names ("*PCFileName" in PPD file) in the Foomatic
+	  PPD files ("<pcmodel>" 6-character string in printer entry,
+	  "<pcdriver>" 2-character string in driver entry).
+
+	* lib/Foomatic/DB.pm: Adobe-compliant PPD file header entries.
+
+	* README: Documentation for custom page sizes, PC file name
+	  fragments ("<pcmodel>", "<pcdriver>), PostScript file sections
+	  ("<arg_section>") in XML database.
+
+2002-10-14  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-perl-data.c, lib/Foomatic/DB.pm: "*OrderDependency"
+	  lines in PPD files, started option group support
+	  ("<arg_section>" and "<arg_group>" tags in the "<arg_execution>"
+	  section of the option XML files).
+
+	* lib/Foomatic/DB.pm: "*End" lines after PPD option setting entries
+	  with multiple-line PostScript code.
+
+	* lib/Foomatic/DB.pm: Support for custom paper sizes as described
+	  in section 6.3 of Adobe's PPD 4.3 specification. If a
+	  printer/driver combo has a choice named "Custom" in its PageSize
+	  option, or a paper size which has at least one dimension being
+	  zero, the combo is assumed to support custom paper sizes and the
+	  PPD file gets supplied with the appropriate definitions. With
+	  CUPS one can specify arbitrary paper sizes on the command line
+	  then
+
+	  lpr -P huge -o PageSize=Custom.500x750cm bigposter.ps
+	
+2002-10-10  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Set release number of all files to 3.0.
+	
+2002-10-09  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* README, USAGE: Updated documentation according to the splitted
+	  packages.
+	
+2002-10-08  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Splitted Foomatic into four packages:
+	
+	  - foomatic-filters: Filter scripts used by the spoolers to
+	    convert the incoming PostScript data into the printer's
+	    native format using a printer/driver specific PPD file
+	  - foomatic-db-engine: Foomatic's database engine generates
+	    PPD files from the data in Foomatic's XML database. It also
+	    contains scripts to directly generate print queues and handle
+	    jobs.
+	  - foomatic-db: The collected knowledge about printers, drivers,
+	    and driver options in XML files, used by foomatic-db-engine
+	    to generate PPD files.
+	  - foomatic-db-hpijs: Foomatic XML data generator for HP's HPIJS
+	    driver.
+	
+	  This package is foomatic-db-engine.
+
+	* configure.in, Makefile.in: Removed all portions not needed for
+	  foomatic-db-engine.
+
+	* configure.in, Makefile.in, makeDefaults.in: Prepared the package
+	  for using the Foomatic database from an external package
+	  (usually foomatic-db).
+
+	* configure.in: Fixed check to set /etc instead of /usr/local/etc
+	  as $sysconfdir.
+	
+	* lib/Foomatic/DB_perl_xml.pm: This file is obsolete, removed.
+
+2002-10-07  Till Kamppeter <till.kamppeter@gmx.net>
+   
+	* data-generators/hpijs/hpijs-printermap,
+	  db/source/printer/HP-Business_Inkjet_3000.xml: The HP Business
+	  Inkjet 3000 does not work with the HPIJS driver.
+
+	* db/source/printer/122496.xml,
+	  db/source/printer/HP-DesignJet_750.xml: Removed hint that IJS
+	  driver has problem with large paper sizes. This is fixed.
+	
+2002-10-06  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/opt/*: Added "largeformat-PageSize.xml" special page
+	  size option for large format printers (drivers "dnj650c" and
+	  "Postscript"). Now Foomatic supports paper sizes larger than A3
+	  with these printers.
+	
+2002-10-05  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added the "lz11" driver entry (enhanced version
+	  of "cZ11" for the Lexmark Z11 printer).
+
+	* db/source/printer/*: Fixed auto-detection info of the HP Color
+	  LaserJet 4500 and removed wrong auto-detection info from the
+	  Kyocera FS-1200.
+	
+2002-10-03  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added driver entry "lxm3200-tweaked", the
+	  "lxm3200" driver modified to also support the Lexmark Z31 and
+	  Z12.
+
+	* db/source/printer/*: Rated the Lexmark Z31 as "Mostly" and the
+	  Z12 as "Partially", due to the "lxm3200-tweaked" driver.
+	
+	* db/source/printer/Epson-Stylus_CX3200.xml: Changed rating to
+	  "Paperweight" (nothing known about this device yet).
+
+	* db/source/*/*: Fixed "stc300.upp" driver, execution information
+	  was missing, new URL.
+
+	* db/source/*/*: Added the Epson MJ 520C to the list of supported
+	  printers of the "stcolor", "stcany.upp", and "stc300.upp"
+	  drivers. It is unclear whether it works with Gimp-Print.
+	
+2002-10-02  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Added more japanese Epson inkjets: Epson CL
+	  700, 750, Epson EM 900C, 900CN, 930C, 930CN, MC 2000, 7000,
+	  9000, MJ 520C, 5100C, 6000C, 8000C, PM 760C, 800C, 820C, 850PT,
+	  2200C, 3300C, 5000C, PX 7000, 9000.
+
+	* db/source/printer/*: Added the Epson Stylus Photo 825, 1290S,
+	  EX3, Stylus CX3200.
+
+	* db/source/printer/*: Removed broken printer entries for the
+	  Epson PM 760C, 770C, 800C, 820C/3300C, "Stylus PM760", "Stylus
+	  PM820".
+
+	* db/source/printer/*: Re-rated the Epson Stylus Photo 785, 825,
+	  875, 895, 915, and 925 from "Perfectly" to "Mostly" because one
+	  cannot access the photo card readers with free software. Also
+	  updated the text appropriately.
+
+	* db/source/printer/Epson-Stylus_Pro*: Removed hint that IJS
+	  driver has problem with large paper sizes. This is fixed.
+
+	* db/source/driver/filter*, db/source/opt/jap*: Removed the
+	  "filter*" drivers. I don't know where one can download these
+	  drivers.
+
+	* db/source/driver/PM*: Updated the driver entries to use the new,
+	  correct printer entries.
+
+2002-10-01  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Added japanese Epson inkjets: Epson MC
+	  5000, 1000, PM 700C, 730C, 750C, 770C, 780C, 790PT, 880C, 950C,
+	  2000C, 3000C, 3500C, 4000PX, 7000C, 9000C, 10000.
+	
+2002-09-30  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* data-generators/hpijs/hpijs-printermap, db/source/printer/*:
+	  Bugfix: The HP DeskJet 612x printers do not support full-bleed
+	  printing.
+
+	* data-generators/hpijs/hpijs-printermap, db/source/*/*: Added
+	  the HP Business Inkjet 3000, DesignJet 5500, 5500ps, LaserJet
+	  5100, Color LaserJet 2500, 5500.
+	
+2002-09-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* data-generators/hpijs-rss/*: Added support for HPIJS patched by
+	  Matthias Bunte and Richard Spencer-Smith (see
+	  http://www.linuxprinting.org/download/printing/hpijs/). The
+	  driver entry name is "hpijs-rss".
+
+	* data-generators/hpijs/hpijs-generator: Mentioned that the
+	  current Foomatic data is also for HPIJS 1.2.2.
+
+	* data-generators/hpijs/hpijs-printermap, db/source/printer/*:
+	  Added the HP DeskJet 450, 3320, 6122, 6127, PhotoSmart P230, PSC
+	  2150.
+
+	* data-generators/hpijs*/hpijs*-generator: Corrected "Best
+	  Grayscale" modes for the HP DeskJet 350, 6xxC series, and the
+	  Apollo printers, the mode supports only 600x300 (not 300x300)
+	  dpi and all except the DeskJet 350 and the 63xC series use
+	  both and not only the black cartridge.
+
+	* db/source/printer/*: Changed recommended driver to "hpijs-rss"
+	  when it was "hpijs" before (the patched version has better
+	  output quality).
+
+	* db/source/printer/*: Raised ratings of all "DJ9xx"-class HP
+	  inkjets without fax facility from "Mostly" to
+	  "Perfectly". Updated the texts of all "DJ9xx"-class models
+	  (because of the patched HPIJS, "hpijs-rss").
+	
+	* db/source/printer/*: Raised ratings of the HP PPA printers
+	  (supported by the "pnm2ppa" driver from "Mostly" to "Perfectly",
+	  the driver supports their full functionality.
+	
+	* db/source/driver/PostScript.xml: Added link to Kurt Pfeifle's
+	  tutorial chapter about PostScript to the text of the
+	  "Postscript" driver entry.
+
+2002-09-27  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* src/cupsomatic.pl.in: Made command line option list only be
+	  logged in debug mode. Mac OS X adds very many options to the
+	  CUPS filter chain and so the option list gets longer than 1024
+	  bytes and this CUPS cannot handle in its error_log file.
+	
+2002-09-26  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/driver/Postscript.xml: Updated text for new PPD file
+	  download place.
+	
+2002-09-11  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* data-generators/hpijs/hpijs-generator: The 300-dpi normal mode
+	  for the "LJMono" device class uses 600 dpi internally and so
+	  does not work on the 300-dpi-only printers as the HP LaserJet 4L.
+	  Restricted these printers to use the 300-dpi draft mode which
+	  does real 300 dpi.
+	
+2002-08-31  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/opt/*, db/source/driver/pnm2ppa.xml: Cleaned up
+	  options for the "pnm2ppa" driver.
+	
+2002-08-30  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/HP-LaserJet_1000.xml: Updated text and rating
+	  ("Partially") according to a longer posting of the author of the
+	  "pbmtozjs" driver.
+
+	* db/source/driver/oki4w.xml: Added additional hint about the
+	  setup of print queues with this driver to the text.
+	
+2002-08-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/driver/pbmtozjs.xml,
+	  db/source/opt/pbmtozjs-PageSize.xml: Added driver for the
+	  HP LaserJet 1000.
+
+	* db/source/printer/HP-LaserJet_1000.xml: Updated text and rating
+	  ("Mostly").
+	
+	* foomatic-configure.in, configure.in, Makefile.in, makeDefaults.in,
+	  USAGE: Added support for HPOJ 0.9.
+
+	* README, USAGE: Corrected version number.
+	
+2002-08-27  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Added the HP PSC 2110 and 2210, replaced
+	  the HP PSC 300 by the HP PSC 370 and 380, text fixes for the
+	  HP DeskJet 5550 and 5551, PhotoSmart 7150, 7350, and 7550,
+	  Epson Stylus C61 and C62.
+	
+	* db/source/printer/*: Corrected/updated "Recommended driver" and
+	  texts for Epson Stylus Photo 950, 960, 2100, 2200, Stylus Pro
+	  7600, 9600, and HP DeskJet 3420.
+
+	* data-generators/hpijs/hpijs-printermap: Added HP PSC 370, 380,
+	  2110, 2210, removed HP PSC 300.
+	
+2002-08-24  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* src/cupsomatic.pl.in, src/directomatic.pl.in, src/lpdomatic.pl.in:
+	  Now option settings stuffed into the PPD files have priority
+	  against settings done via command line options given with the
+	  printing command. This is done to make sure that settings given
+	  in applications (also on clients with other spooler/OS) have are
+	  taken into account.
+
+	* src/cupsomatic.pl.in: Numerical options give on the command line
+	  and not being exactly of a value given as choice in the
+	  PPD-O-Matic PPD file are now overriding the PPD defaults which
+	  "pstops" inserts into the PostScript, but they are overridden
+	  when an application stuffs settings into the PostScript file.
+	
+2002-08-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* data-generators/hpijs/hpijs-generator,
+	  data-generators/hpijs/hpijs-printermap: Updated to HPIJS 1.2.1,
+	  previous file versions in data-generators/hpijs/ tagged with
+	  "hpijs-1_2-files".
+
+	* *: Before the update to HPIJS 1.2.1 tagged all files of the
+	  repository with "hpijs-1_2".
+
+	* db/source/printer/*: Switched "recommended driver" of the HP
+	  DeskJet 400 and 420C to "hpijs", updated text and rating of HP
+	  DeskJet 420C.
+
+2002-08-17  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Added the Epson Stylus Photo 830, 915, 925,
+	  Epson Stylus C41UX, C41SX, C42SX, C61, C62, C82.
+
+	* db/source/printer/*: Fixes on text and rating for the Epson
+	  Stylus Color 880, 980, 8 3, C42UX, C80.
+	
+2002-08-12  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* Makefile.in: In the "inplace" mode the line "use lib/;" and not
+	  "use lib/Foomatic/;" must be inserted to make the scripts using
+	  the Foomatic libraries from the source tree and not the system-
+	  wide ones.
+	
+2002-08-10  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* data-generators/hpijs/hpijs-generator: Given the short name
+	  "Resolution" to the "Quality, MediaType, Ink Type" option,
+	  so it gets accessable in the GIMP.
+	
+2002-08-09  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Text fixes for the HP OfficeJet 6xx/7xx and
+	  OfficeJet Pro 1175C (thanks to David Paschal for all the info).
+	
+	* db/source/printer/186729.xml: Corrected auto-detection data for
+	  the HP DeskJet 970C.
+	
+2002-08-08  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Adapted texts of the printer entries to the
+	  new HPOJ 0.9 (all devices scan with SANE now and photo cards are
+	  supported by the stable version), also corrected the address of
+	  the SANE home page in the printer entries. Raised HP PhotoSmart
+	  7x50 and DeskJet 555x to "Perfectly" because full-bleed printing
+	  works now (thanks to David Paschal for all the info).
+
+	* db/source/printer/HP-PhotoSmart_7550.xml: Added HP PhotoSmart
+	  7550.
+
+	* data-generators/hpijs/hpijs-printermap: Added HP PhotoSmart
+	  7550.
+
+	* data-generators/hpijs/hpijs-[pg]*: Added full-blead support for
+	  the HP PhotoSmart 7x50 and DeskJet 555x.
+
+2002-08-07  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Change the recommended drivers for
+	  Gimp-Print-supported printers from "gimp-print-ijs" to
+	  "gimp-print", the IJS interface of Gimp-Print has problems with
+	  non-english locales.
+
+	* data-generators/hpijs/hpijs-generator: Fixed bug that the old
+	  models (HP DeskJet 6xx, Apollo) do only 600x300 dpi and not 600
+	  dpi in best grayscale mode.
+
+	* db/source/opt/69.xml: Set default quality mode for the "cdjXXX"
+	  and "chp2200" drivers to "Normal" instead of "Presentation".
+
+2002-08-06  Manfred Wassmann  <manolo@NCC-1701.B.Shuttle.de>
+
+	* foomatic-combo-xml.1.in: Applied Eric S. Raymonds patch. Adds
+	  missing header and fixes typo.
+
+2002-07-27  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/HP-DeskJet_656C.xml: Corrected text, max.
+	  resolution and rating.
+	
+2002-07-24  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* src/cupsomatic.pl.in: CUPS 1.1.15 mangles the "docs" option and so
+	  the documentation page was not printed any more. Fixed.
+	
+2002-07-23  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/Epson-Stylus_Pro_?600*.xml: Re-arranged
+	  entries for the Epson Stylus Pro 7600/9600 not being separate
+	  for different ink types to fit to the Foomatic generator of
+	  Gimp-Print.
+	
+	* db/source/printer/*: Raised the ratings of the Epson Stylus C42UX,
+	  Stylus Photo 950, 960, 2100, 2000 from "Paperweight" to
+	  "Partially", there is preliminary support by Gimp-Print.
+	
+2002-07-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* *: Raised revision number of all files to 2.9.
+
+	* db/source/printer/Epson-Stylus_Photo_960: Added Epson Stylus
+	  Photo 960.
+
+	* db/source/printer/Epson-Stylus_Photo_950: Text update.
+	
+2002-07-19  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* README, USAGE: Foomatic version 2.0.0 (Stable branch of
+	  Foomatic, package splitting and PPD-centric Foomatic will be
+	  developed in head branch, version 2.9.x)
+
+	* *: Before any further development is done, tagged all files
+	  of the repository with "foomatic-2_0_0" and "foomatic-2_0-bp",
+	  started stable branch "foomatic-2_0-branch".
+	
+2002-07-18  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-combo-xml.c: Added facilities for drivers to suppress
+	  the usage of PJL option by adding a "<nopjl />" flag to the
+	  "<execution>" section of a driver's XML file. This can be used
+	  for drivers which produce their own XML headers as "hpijs" and
+	  "hl1250".
+
+	* README: Documentation for the new "<nopjl />" flag.
+
+	* data-generators/hpijs/hpijs-generator: Added "<nopjl />" flag to
+	  "hpijs" driver.
+
+	* db/source/driver/hl1250.xml: Added "<nopjl />" flag to "hl1250"
+	  driver.
+
+	* foomatic-perl-data.c: Let "<nopjl />" flag also be put into the
+	  combo Perl data structure, to use it on the "Execution Details"
+	  pages of linuxprinting.org.
+
+	* lib/Foomatic/DB.pm: Added hint in "Execution Details" when a
+	  driver suppressing PJL options is used with a PJL-capable
+	  printer.
+
+	* db/source/printer/*: Changed recommended driver of the HP
+	  DeskJet 500, 510, 520, 500C, 540C, OfficeJet, OfficeJet LX,
+	  OfficeJet 300, 330, and 350 to "hpijs".
+	
+2002-07-17  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/Epson-Stylus_C42UX.xml: Added the Epson Stylus
+	  C42UX ("Paperweight").
+	
+	* src/cupsomatic.pl.in: Fixed bug of PostScript code for CUPS
+	  page logging not working correctly for PostScript level 1
+	  files rendered by a PostScript level 2/3 interpreter.
+
+	* data-generators/hpijs/hpijs-generator,
+	  data-generators/hpijs/hpijs-printermap: Updated to HPIJS 1.2,
+	  previous file versions in data-generators/hpijs/ tagged with
+	  "hpijs-1_1-files".
+
+	* *: Before the update to HPIJS 1.2 tagged all files of the
+	  repository with "hpijs-1_1".
+
+	* db/source/printer/*: Added the HP DeskJet 670TV, 843C, 916C,
+	  933C, 934C, 935C, and PhotoSmart P130.
+
+	* db/source/printer/*: Text/rating updates of many HP printers due
+	  to HPIJS 1.2.
+	
+2002-07-15  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* src/cupsomatic.pl.in: Fixed bug of PostScript code for CUPS
+	  page logging not working correctly on all documents and also
+	  not working when more than one copy was requested.
+	
+2002-07-14  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Corrected link in the entries of the
+	  Samsung SmartGDI printers.
+
+	* db/source/driver/gdi.xml: Mentione that the provided MagicFilter
+	  file only works with MagicFilter 1.2.
+	
+2002-07-10  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure.in: Fixed incompatibility with Perl 5.0.x:
+	  "delete" could not delete array elements. Thanks to Olaf Till
+	  (i7tiol at t-online dot de).
+
+	* db/source/printer/*: Added auto-detection info to the HP LaserJet
+	  2100. Due to the 2100 and 2100M having the same auto-detection
+	  info, they can be confused by frontends, so used "pxlmono" as
+	  recommended driver because it works on both.
+
+	* db/source/driver/*: Added HP LaserJet 2100M to the printer lists
+	  of the PCL 5/6 printer drivers.
+
+2002-07-09  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Updated text of HP DeskJet 5550, 5551,
+	  PhotoSmart 7150.
+
+	* db/source/printer/HP-PhotoSmart_7350.xml: Added HP PhotoSmart
+	  7350.
+	
+2002-07-06  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*, data-generators/hpijs/hpijs-printermap: Added new
+	  HP printers: HP DeskJet 3420, 3820, 5550, 5551, PhotoSmart 7150,
+	  Color LaserJet 4600.
+	
+	* db/source/printer/*: Re-rated Epson Stylus C20/C40 and Stylus
+	  Color 680 to "Perfectly", added hint about head-alignment to the
+	  Epson Stylus Photo 810/820. Text cleanup for Epson Stylus Color
+	  880/980.
+
+	* db/source/printer/317321.xml: Re-rated Epson Stylus Color 480
+	  to "Perfectly". Cartridge change with "mtink" was confirmed.
+
+2002-06-26  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* README: Improvements of the description of the Foomatic XML data
+	  structure.
+	
+2002-06-25  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Corrected tags for PJL support in HP
+	  printer entries. Many old LaserJets do not support PJL.
+
+	* db/source/printer/*: Removed many "Unverified" tags from
+	  HP printer entries.
+
+	* db/source/printer/23104.xml: Re-rated LaserJet 2D to "Mostly",
+	  the duplex unit is not supported,
+
+	* data-generators/hpijs/hpijs-printermap: Added the HP DesignJet
+	  ColorPro CAD to the printers supported by HPIJS, it is a
+	  repackaged HP 2500C. Re-rated it to "Perfectly".
+	
+	* src/cupsomatic.in, src/lpdomatic.in, src/ppromatic.in,
+	  src/directomatic.in, lib/Foomatic/DB.pm: Removed the usage of
+	  the PJL commands "JOB" and "EOJ" because not all PJL-capable
+	  printers support it.
+
+2002-06-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* README: Updated the description of the Foomatic XML data
+	  structure.
+
+	* USAGE: Updated for OpenOffice.org 1.0, added work-around for bug
+	  that OpenOffice.org and Star Office do not print the Euro currency
+	  symbol, added hint how to get PPD from remote CUPS server.
+	
+2002-06-21  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Added the Epson Stylus Pro 7600 and 9600
+	  printers.
+	
+2002-06-16  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Added the Epson AcuLaser C4000 and C4000PS.
+
+	* db/source/*/*: Added the "alc4000" driver entry and updated the
+	  "PostScript" driver entry for thr Epson AcuLaser C4000 and
+	  C4000PS.
+	
+2002-06-13  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* README: Added commented example of a Foomatic PPD with embedded
+	  Perl data structure.
+
+	* Foomatic-Devel-Ideas.txt: New file to collect ideas about the
+	  further development of Foomatic.
+	
+2002-06-12  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Added hint to the "mtink"
+	  (http://xwtools.automatix.de/) printer maintenance tool to the
+	  entries for the Epson Stylus Color 480/580. It allows software-
+	  controlled cartridge changing.
+
+2002-06-10  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Added the Epson Stylus Photo 950, 2100, and
+	  2200.
+	
+2002-06-02  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/Epson-EPL-5900L.xml: Added the Epson EPL-5900L
+	  ("Paperweight").
+	
+2002-05-30  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Changed recommended driver for large-format
+	  printers (A2 and bigger) from "gimp-print-ijs" to "gimp-print"
+	  and added a comment. IJS cannot handle very large raster
+	  graphics.
+
+	* db/source/printer/Epson-Stylus_Pro_7500.xml: Raised rating to
+	  "Perfectly", I had no problem to print booth posters for the
+	  LinuxTag 2002 with it.
+
+2002-05-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/opt/cdj5XX-BlackCorrect.xml: Corrected weird short
+	  name of the "BlackCorrect" option for the "cdj5xx" drivers.
+	
+2002-05-28  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*, data-generators/hpijs/hpijs-generator,
+	  data-generators/hpijs/hpijs-printermap: Added HP DeskJet 957C,
+	  959C, and 975C to the database.
+
+2002-05-24  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*, data-generators/hpijs/hpijs-generator,
+	  data-generators/hpijs/hpijs-printermap: Added HP DeskJet 850C,
+	  855C, 870C, 890C, 1100C, OfficeJet Pro 1150C to the supported
+	  printers of the "hpijs" driver. David Suffield, developer of
+	  "hpijs" at HP told that they work with that driver.
+
+	* db/source/driver/*: Corrected URLs of the drivers which come with
+	  GhostScript (GNU GhostScript 7.05 instead of 6.51).
+	
+2002-05-23  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Fixed URLs in several printer entries
+	  (added missing "http://").
+	
+2002-05-19  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* README, USAGE: Added information that make_configure needs libxml
+	  2.x.Fixed some typos.
+
+	* foomatic-fix-xml.in: Fixed initial comment.
+	
+2002-05-18  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* data-generators/hpijs/*, db/source/*/hpijs*, Makefile.in: Included
+	  generator script for HPIJS in the Foomatic package, the
+	  appropriate entries are generated during the build process now.
+
+	* Makefile.in: Added "uninstall" targets.
+	
+2002-05-16  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/Lexmark-Z13.xml: Added the Lexmark Z13 to the
+	  printer database.
+
+	* db/source/*/*: Fixed HPIJS data for the HP DeskJet 825C/845C: they
+	  do grayscale with the black cartridge and not with the color
+	  cartridge.
+	
+2002-05-15  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-preferred-driver.in: Updated driver priority list to
+	  give higher priority to the old HP LaserJet/PCL drivers coming
+	  with GhostScript than to Gimp-Print. The old drivers work better
+	  on laser printers.
+
+	* db/source/printer/*: Use the old GhostScript driers ("ljet4",
+	  "laserjet", ...) instead of "gimp-print-ijs" as recommended
+	  driver for laser printers.
+
+2002-05-11  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-preferred-driver.in: Updated driver priority list.
+
+	* db/source/printer/*: Use "gimp-print-ijs" as recommended driver
+	  where "gimp-print" was the recommended driver before.
+
+	* db/source/driver/lm1100.xml: Added hint how to compile it with
+	  gcc 3.1 to the description text.
+	
+2002-05-10  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/driver/hpijs.xml: Corrected version number in "hpijs"
+	  driver entry to be 1.1.
+	
+2002-05-09  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added HP Business Inkjet 2230 and 2280 printers.
+
+	* db/source/*/*: Updated HPIJS driver entries to version 1.1.
+
+	* db/source/printer/HP-PhotoSmart_P100.xml: Raised the HP PhotoSmart
+	  P100 to "Perfectly".
+	
+2002-05-07  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added the printer models HP OfficeJet, OfficeJet
+	  LX, OfficeJet 300, 330, 350, PhotoSmart. Updated driver entries
+	  "pcl3", "hpdj", and "djet500" appropriately.
+
+	* db/source/printer/*: small corrections on the HP DeskJet 520,
+	  560C, Olivetti JP450, DEC DECwriter 110i.
+
+2002-05-05  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Let paper size also be read from
+	  "-dDEVICEWIDTHPOINTS=..."/"-dDEVICEHEIGHTPOINTS=...", needed for
+	  "gimp-print-ijs" and "hpijs" drivers.
+
+2002-04-22  Manfred Wassmann  <manolo@NCC-1701.B.Shuttle.de>
+
+	* foomatic-perl-data.1.in: Created basic manpage for
+	  foomatic-perl-data.
+
+2002-04-18  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Added some more paper sizes to the
+	  "getpapersize()" function, according to DeviceForm.cpp on the OMNI
+	  CVS.
+
+2002-04-17  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Corrected "hpijs" entry for the HP 2500C/2500CN,
+	  they belong to the "DJ9xxVIP" group (as the HP DeskJet 990C), so
+	  they work perfectly with "hpijs". Replaced model string "HP
+	  BUSINESS INKJET 2250" by "DESKJET 990", the former string is
+	  not recognized by "hpijs" (in contrary to the driver's
+	  documentation).
+
+	* db/source/*/*: Added the Sony IJP-V100 multi-function device.
+
+	* lib/Foomatic/DB.pm: Added '*PSVersion: "(3010.000) 653"' entry
+	  for GhostScript 6.53 to the PPD files. In the "getpapersize()"
+	  function let the ISO B sizes be returned, when the paper size
+	  name is only "Bx" without "JIS" or "ISO". This is also the
+	  default of GhostScript.
+	
+	* Makefile.in: Fixed bug of database going to
+	  /usr/local/share/share/foomatic.
+
+	* foomatic-configure.in: Made "foomatic-configure -Q -q -r"
+	  working correctly with CUPS 1.1.14.
+
+	* Makefile.in, makeDefaults.in, configure.in, lib/Foomatic/DB.pm:
+	  Eliminated dependency on the "libwww-perl" Perl library, used
+	  command line tools "wget" or "curl" instead. Now Foomatic should
+	  work only with standard Perl libraries as being part of Perl
+	  itself.
+
+	* USAGE, README: Added the requirement of one of the tools "wget"
+	  and "curl".
+
+	* db/source/driver/gdi.xml: Updates URLs.
+	
+2002-04-16  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added HP 2000C/2500C/2500CM to the "hpijs"
+	  driver, Removed 1200-dpi hires mode from HP Business Inkjet 22xx
+	  models.
+
+	* db/source/*/*: Added HP Business Inkjet 2600
+
+	* db/source/*/*: Text corrections on HP Business Inkjet 22xx
+	  printers.
+
+	* foomatic-kitload.in: Let existing files not being overwritten
+	  unless the "-f" ("force") switch is used, improved screen
+	  output, "CVS" subdirectories in the kit get ignored.
+
+	* lib/Foomatic/DB.pm: In the "getexecdocs()" function apply the
+	  "htmlify()" to all strings which are shown on the web page.
+	  Added paper sizes for the "omni" driver to the
+	  "getpapersizes()" function.
+	
+2002-04-15  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* USAGE: Improvements on the installation instructions.
+
+	* make_configure: Added a workaround for a bug in the autoconf
+	  macros of libxml2.
+
+	* db/source/*/*: Fixed entries for the HP 2000C/2500C/2500CM
+	  printers.
+	
+2002-04-14  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* configure.in, acinclude.m4, Makefile.in, Makefile, install-sh,
+	  make_configure, makeMan.in, makeMan, makeDefaults.in,
+	  makeDefaults, foomatic-addpjloptions.in, foomatic-addpjloptions,
+	  foomatic-cleanupdrivers.in, foomatic-cleanupdrivers,
+	  foomatic-compiledb.in, foomatic-compiledb,
+	  foomatic-configure.in, foomatic-configure, foomatic-datafile.in,
+	  foomatic-datafile, foomatic-fix-xml.in, foomatic-fix-xml,
+	  foomatic-getpjloptions.in, foomatic-getpjloptions,
+	  foomatic-gswrapper.in, foomatic-gswrapper, foomatic-kitload.in,
+	  foomatic-kitload, foomatic-ppdload.in, foomatic-ppdload,
+	  foomatic-preferred-driver.in, foomatic-preferred-driver,
+	  foomatic-printjob.in, foomatic-printjob, mfomatic.in, mfomatic,
+	  README, USAGE, src/cupsomatic.pl.in, src/cupsomatic.pl,
+	  src/directomatic.pl.in, src/directomatic.pl,
+	  src/lpdomatic.pl.in, src/lpdomatic.pl, src/ppromatic.pl.in,
+	  src/ppromatic.pl: Introduced a GNU-autoconf-generated "configure"
+	  script, now one can easily install Foomatic with the well-known
+	  "./configure; make; make install".
+	
+2002-04-12  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-ppdload: Switched foomatic-ppdload to the new
+	  Perl-XML/Grove-free DB.pm.
+
+	* foomatic-ppdload, foomatic-ppdload.8.in: Added "-R" option to
+	  remove a printer from the "ppd" driver.
+
+	* README: Removed paragraph that foomatic-ppdload needs the old
+	  Perl-XML/Grove DB.pm.
+
+	* lib/Foomatic/PPD.pm: Let the "PageRegion" option in the PPD file
+	  being skipped when creating Foomatic XML data. It is te same
+	  option as "PageSize".
+	
+	* db/source/driver/Postscript.xml: Corrected HTML tags.
+	
+2002-04-10  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-perl-data.c: Added reading of auto-detection data also
+	  for the USB and SNMP connection types. Added support for returning
+	  commants and texts in other languages the english ("-l <language>"
+	  command line option).
+
+	* db/source/printer/HP-PSC_750.xml: Added USB auto-detection info.
+
+2002-04-09  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Made the "sortargs()" and "sortvals()"
+	  functions working with Perl 5.0x. The "sort()" function of these
+	  old Perl versions only supports the two items to compare being
+	  given to the copmaring function via the global variables "$a"
+	  and "$b", and not via "@_". linuxprinting.org runs Perl 5.005.
+	  Made also the choices for the options better sorted, especially
+	  Letter/A4 paper sizes in the beginning of the list, resolutions
+	  and "Upper"/"Middle"/"Lower" trays correctly sorted, "Default"
+	  in the beginning of the lists.
+
+2002-04-08  Till Kamppeter <till.kamppeter@gmx.net>
+	
+	* foomatic-perl-data.c: New C program to parse the XML code to
+	  generate Perl data structures from it. Uses libxml (libxml 2.x
+	  recommended because otherwise XML files beginning with a blank
+	  line cannot be read).
+	
+	* lib/Foomatic/DB.pm: Removed disk cache and XML/Grove Perl
+	  library usage completely, all XML handling is done by C code
+	  now. Added paper sizes of the Dymo-CoStar/Avery label printers
+	  to the "getpapersize()" function, now the "ImageableArea" and
+	  "PaperDimension" entries in the PPD files are built correctly
+	  for these printers. Added possibility to output a combo XML file
+	  with the option default settings set to the values of the queue
+	  currently worked on.
+
+	* lib/Foomatic/DB_perl_xml.pm: Stored old XML/Grove/disk cache
+	  version of the Foomatic database library. Added documentation
+	  for this file as comments in its beginning.
+
+	* foomatic-configure, foomatic-printjob: Removed "grove-pathval"
+	  expression from "use Foomatic::DB.pm" line.
+
+	* foomatic-configure: When a printer queue is set up or modified,
+	  the option default settings are also set in the
+	  /etc/foomatic/<queue>.xml.gz printer/driver combo XML file. So
+	  frontends can also read the option settings from the XML file.
+
+	* foomatic-ppdload: Re-linked to old lib/Foomatic/DB_perl_xml.pm,
+	  Perl-XML/Grove-free version not implemented yet.
+
+	* foomatic-compiledb, foomatic-compiledb.8.in,
+	  foomatic-compiledb.1.in: In the cache-less time this has a new
+	  purpose: It generates data files for a chosen spooler (or combo
+	  XML files) and for either selected or all drivers. Moved man
+	  page to section 1, foomatic-compiledb works from a normal user
+	  account now (due to the removed cache).
+
+	* foomatic-datafile.8.in, foomatic-datafile.1.in: Moved man
+	  page to section 1, foomatic-datafile works from a normal user
+	  account now (due to the removed cache).
+
+	* foomatic-fix-xml: Remove leading blank lines from the XML files
+	  in the local Foomatic database. The leading blank lines make the
+	  XML files not readable by libxml 1.x.
+
+	* Makefile: Added compilation and installation of
+	  foomatic-perl-data.c.
+
+	* Makefile, makeDefault: Commented out all cache-related stuff.
+	
+	* Makefile: Moved foomatic-datafile and foomatic-compiledb from
+	  /usr/sbin to /usr/bin.
+
+	* README, USAGE: Foomatic version 1.9 (Foomatic without
+	  Perl-XML/Grove and without disk cache).
+
+	* db/source/*/*: Replaced all occurences of a cross character
+	  (used in resolutions as "600x300 dpi") by an "x" (the letter
+	  "X").  libxml chokes on the cross. Removed leading blank lines
+	  from the XML files, because this breaks libxml 1.x.
+
+2002-04-03  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Added new paper sizes of Gimp-Print to the
+	  paper size table of the "getpapersize" function, fixed a bug of
+	  wrong calculation of "wXXXhYYY" and "XXXxYYY" paper sizes in the
+	  same function.
+
+2002-03-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* src/ppromatic.pl: Made ppromatic also working in non-english
+	  configurations.
+	
+2002-03-28  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/HP-LaserJet_12?0.xml: New user report
+	  for the LaserJet 1200/1220.
+
+	* db/source/*/*: Added new Kyocera models: FS-1000+, FS-1010,
+	  FS-1800, FS-1900, FS-3800, FS-9100DN, FS-9500-DN.
+
+	* db/source/driver/stp.xml: Added warning that this file is only
+	  for Gimp-Print 4.0.x.
+
+2002-03-27  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-combo-xml.c: Added possibility to modify the default
+	  option settings in the generated XML ("-o" command line option
+	  for foomatic-combo-xml).
+	
+2002-03-26  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/153056.xml: Updated text of the HP DeskJet
+	  340C according to a new user report.
+
+	* db/source/*/*: Added Lexmark Z83 multi-function device.
+	
+2002-03-24  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/HP-LaserJet_12?0.xml: LaserJet 1200/1220 is 
+	  very slow in graphics, added user report.
+	
+2002-03-21  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Updated text of all HP printers and
+	  multi-function devices which need HPOJ or the modified printer.c
+	  kernel module to be able to print via USB.
+
+	* db/source/printer/*: Updated text of the HP PhotoSmart 1[012]xx
+	  printers because they need the modified USB printer.c kernel
+	  module from the HPOJ website to work together with HPOJ.
+
+	* db/source/*/*: Added the Okidata OL400e, HP OfficeJet D125, and
+	  HP LaserJet 3310 MFP and updated the driver data appropriately.
+
+	* db/source/*/*: Removed spaces from the names of the Okidata
+	  OLxxx models, so that they get correctly sorted in the printer
+	  listings. Modified option entries appropriately.
+	
+2002-03-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Updated text of many HP and Apollo printers
+	  and moved many of them from "Mostly" to "Perfectly".
+
+	* db/source/printer/*: Updated text of HP OfficeJet G and K series
+	  because they need HPOJ also when one only wants to print via
+	  USB.
+
+	* db/source/*/*: Added the Apollo P-1220 Barbie, P1250, P2250,
+	  P-2550, and P-2650. Updated the driver data appropriately.
+	
+2002-03-19  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Updated data for the "hpijs" driver to fit
+	  to HPIJS 1.0.4. Modified printer entries appropriate to the new
+	  features ("hpijs" also recommended on large format printers,
+	  DeskJet 990 and compatibles work "Perfectly").
+	
+2002-03-18  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Modified text of HP LaserJet 1200, USB
+	  printing only works with HPOJ.
+	
+2002-03-17  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-combo-xml.c: Introduced two debug output levels ("-v",
+	  "-vv"). Now I do not need a special debug version any more.
+
+2002-03-17  Manfred Wassmann  <manolo@NCC-1701.B.Shuttle.de>
+
+	* makeDefaults: Added flag $DEBUG to enable debug messages from
+	  Perl modules. It is not exported by default, you can import it
+	  by adding qw(:DEFAULT $DEBUG) to the "use Foomatic::Defaults"
+	  clause.
+
+	* lib/Foomatic/DB.pm: Cache is disabled if CACHEDIR is set to an
+	  empty string at compile time, ie. "make CACHEDIR=".
+
+2002-03-17  Manfred Wassmann  <manolo@NCC-1701.B.Shuttle.de>
+
+	* debian/*: Docs README, TODO, USAGE were not included in the
+	  debian package.
+	  Changed handling of local changes by the debconf interface.
+
+2002-03-16  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Modified text of HP LaserJet 31x0
+	  multi-function devices, because of the available code pieces for
+	  a free software driver for these models.
+	
+2002-03-14  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Corrected entries for Brother printers
+	  driven by the "hl7x0" driver.
+	
+2002-03-12  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Fixed default "Quality" setting for the photo-
+	  capable HP DeskJet 6xxC printers with the "hpijs" driver.
+
+2002-03-09  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Fixed Foomatic data for the B4 and B5 paper sizes
+	  of the "hpijs" driver.
+	* db/source/*/*: "Photo Full Bleed" paper size is only supported by
+	  the PhotoSmart P100 for the "hpijs" driver, fixed Foomatic data.
+	
+2002-03-08  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added the Canon BJC-255SP and BJC-265SP. Modified
+	  "bjx250gs" driver entry appropriately.
+
+2002-03-07  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: When "foomatic-configure" creates a queue
+	  for LPRng, the permissions for the /var/log/lp-errs file are set
+	  correctly now.
+	
+2002-03-05  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added Lexmark E210 laser printer (Samsung ML-4500
+	  clone, "gdi" driver).
+
+	* foomatic-configure: Fixed bug that of float options in
+	  PPD-O-Matic PPD files only the integer part of the default value
+	  was read.
+
+	* foomatic-gswrapper: Fixed Red Hat bug #58319
+	  (https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=58319).
+	  Some PostScript files cannot be handled by "gs ... - < file",
+	  but they need "gs ... /dev/fd/0 < file".
+
+	* lib/Foomatic/DB.pm: Fixed quoting for PDQ, now more complicated
+	  driver command lines with quotes and shell script variables also
+	  work with the PDQ-O-Matic config file generator. Assured that for
+	  every call of GhostScript "foomatic-gswrapper" is used, to fix
+	  Red Hat bug #58319 for all drivers, especially "Postscript".
+
+	* src/*omatic.pl: Assured that for every call of GhostScript
+	  "foomatic-gswrapper" is used, to fix Red Hat bug #58319 for all
+	  drivers, especially "Postscript".
+
+2002-03-04  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added new HP multi-function devices: HP OfficeJet
+	  D135, D145, D155, LaserJet 3300 MFP, 3320 MFP, 3320N MFP, 3330
+	  MFP. Updated driver and option entries appropriately.
+
+	* db/source/*/*: Fixed default driver for HP LaserJet 6P, added
+	  HP DeskJet 610CL to the "hpijs" driver, fixed text for the
+	  HP DeskJet 1125C.
+
+	* src/lpdomatic.pl: Replaced "if ( @pjlprepend > 0 )" by "if (
+	  @pjlprepend > 1 )" so that PJL headers are only used when really
+	  a PJL options is there. Many printers are listed as PJL-capable
+	  in the database, but in reality they are not.
+
+2002-03-03  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* src/cupsomatic.pl, src/ppromatic.pl: Fixed reading default option
+	  choices with a "+" from the PPD file.
+
+2002-03-02  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Fixed the entry for the Brother MFC-9600, it does
+	  600 dpi with the "hl1250" driver.
+	
+2002-03-01  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* src/cupsomatic.pl: Disabled accounting for the "Postscript"
+	  driver, it leads to an extra blank page coming out with every
+	  job.
+	  
+	* db/source/*/*: Added Canon S100, S200, S300, S500, S630,
+	  BJC-2110, Lexmark Optra C710, HP DeskJet 200, DeskJet 841C,
+	  Okidata Okipage 14ex, OL400, Xerox Able 1406, Anitech M24,
+	  Citizen printiva600U, printiva700, printiva1700, Alps MD-2010,
+	  MD-2300, MD-5500. Added these printers to the appropriate driver
+	  entries.
+
+	* db/source/*/*: Added the "ppmtomd" driver for MicroDry (Alps MD,
+	  Citizen printiva, Okidata DP) printers.
+
+	* db/source/*/*: Set "hpijs" as the recommended driver for all
+	  printers supported by this driver.
+
+	* db/source/*/*: Raised Lexmark Z53 from "Paperweight" to
+	  "Perfectly", it is compatible to the Z52.
+
+2002-02-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Updated Foomatic data for the "hpijs" driver to
+	  version 1.0.3.
+	
+2002-02-18  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/driver/lj5*: Removed HP LaserJet 6P, it does not work
+	  with the "lj5gray"/"lj5mono" drivers.
+
+2002-02-13  Manfred Wassmann  <manolo@NCC-1701.B.Shuttle.de>
+
+	* debian/{control,rules} Added Debconf interface to manage
+	  filter.conf.
+
+	* debian/foomatic-bin.{config,templates,postinst} New files needed
+	  by debconf.
+
+2002-02-09  Manfred Wassmann  <manolo@NCC-1701.B.Shuttle.de>
+
+	* lib/Foomatic/DB.pm: Check if existing cache file is empty.
+	  
+
+2002-02-06  Tim Waugh  <twaugh@redhat.com>
+
+	* lib/Foomatic/DB.pm: Cache files created by "foomatic-combo-xml"
+	  were not read sometimes, fixed.
+
+2002-02-05  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* Makefile: Added "remove_trash" target to remove temporary and
+	  backup files created by editors and the patch utility. In
+	  "testing_clean" target added "-f" to the "rm" command for the
+	  links to the cache so that make does not stop with an error when
+	  the links are not there.
+
+2002-02-04  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* Makefile, src/*omatic, filter.conf: Modified Foomatic to only
+	  make the filter scripts out of the source files in src/. Fixed
+	  bugs on filter script source files: "enscript -b <title>", not
+	  "enscript -b=<title>"; empty title gave a line on the top of the
+	  page when using "mpage". Added "-J" (job title) option to
+	  directomatic. Added sample filter.conf.
+
+	* cupsomatic, ppromatic, lpdomatic, directomatic: Removed obsolete
+	  filter scripts.
+
+	* directomatic.1.in: Added "-J" (job title) option.
+
+2002-02-03  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* USAGE: Corrected link for the "ptal" CUPS backend script.
+
+2002-02-03  Manfred Wassmann  <manolo@NCC-1701.B.Shuttle.de>
+
+	* src/Makefile: Make generated scripts executable.
+
+2002-02-03  Manfred Wassmann  <manolo@NCC-1701.B.Shuttle.de>
+
+	* debian/rules: Set LPRNG_CONF=/etc/lprng/lpd.conf.
+
+	* src/lpdomatic.pl: Integrated changes from lpdomatic 1.10.
+	  Overwrite PATH in INPLACE version too.  Changed revision to 2.1
+	  to avoid $lomversion clashes with the old scripts.
+
+	* src/cupsomatic.pl, src/directomatic.pl, src/ppromatic.pl:
+	  Bootstrapped from corresponding filter scripts.
+
+	* src/Makefile: cupsomatic, directomatic and ppromatic get also
+	  built.
+
+2002-02-02  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* Makefile, makeDefaults, foomatic-configure, USAGE, README: Added
+	  support for HPOJ (http://hpoj.sourceforge.net/, low-level driver
+	  for HP's multi-function devices) with "ptal:/..." URIs.
+	
+2002-01-31  Tim Waugh  <twaugh@redhat.com>
+
+	* lib/Foomatic/DB.pm (get_overview_xml): Create directory, like
+	  get_overview_grove does. Also fixed quoting.
+
+2002-01-30  Manfred Wassmann  <manolo@NCC-1701.B.Shuttle.de>
+
+	* lpdomatic: Corrected the path to the configuration file.
+
+2002-01-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-kitload, foomatic-kitload.8.in: Added "-d" option to
+	  install the kit into a staging area from which a package will
+	  be built (as "DESTDIR=..." in GNU automake/autoconf). This is
+	  a patch from Roger Leigh.
+
+	* makeDefaults: Added the possibility to set the cache directory
+	  alternatively with FOOMATIC_CACHEDIR instead of CACHEDIR.
+
+	* cupsomatic, ppromatic, lpdomatic, directomatic: Modified parser
+	  for options embedded in the job data so that option and value
+	  names can contain all printable characters except white space
+	  and "=". This fixed a problem with the "Color Mode" option of
+	  the "pcl3" driver.
+	
+2002-01-28  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added the HP LaserJet 3P with PCL5 extension.
+	
+2002-01-27  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* USAGE: Minor text modifications for XPP 1.1.
+
+	* db/source/*/*: Renamed the database entry for the Canon LIPS-II+
+	  from "Canon-LIPS-II+" to "Canon-LIPS-IIplus". With the "+" in its
+	  ID the printer entry was not accessible on the linuxprinting.org
+	  web site.
+	
+2002-01-24  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-gswrapper: Replaced "-sOutputFile=|cat>&3" by
+	  "-sOutputFile=/dev/fd/3" to make foomatic-gswrapper working with
+	  all versions of GhostScript, of the shell, and of Unix.
+
+2002-01-24  Manfred Wassmann  <manolo@NCC-1701.B.Shuttle.de>
+
+	* foomatic-configure.1.in: Corrected manpage section in header.
+	* foomatic-kitload.8.in: Filled some gaps.
+	* lpdomatic.8.in: Describe how to print the docs.
+	* src/lpdomatic.pl: PJL patch from Tim Waugh. Can select one of
+	  the builtin enscriptcommands by setting textfilter to "a2ps",
+	  "mpage" or "enscript" (without arguments).
+	* debian/rules: Cleanup database.
+
+2002-01-23  Manfred Wassmann  <manolo@NCC-1701.B.Shuttle.de>
+
+	* src: Introduced the subdirectory.
+	* Makefile: Include a target to make the filter scripts from src/.
+	* src/lpdomatic.pl: New source file from which lpdomatic can be
+	  generated.
+	* src/Makefile: Builds lpdomatic from src/lpdomatic.pl.
+
+2002-01-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lpdomatic: Cleaned up user-editable settings part.
+	
+2002-01-21  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/opt/160.xml: Added Epson EPL lasers to constraint in
+	  "Mode" option of "pxlmono"/"pxlcolor", they print only in bw.
+
+	* db/source/printer/*: The Epson EPL-5900/5900PS works perfectly
+	  with "pxlmono", updated text, rating, and recommended driver.
+
+	* db/source/printer/*: Raised the rating for the Lexmark Z42 and
+	  Compaq IJ1200 to "Mostly", to reflect the experience of the
+	  author of "drv_z42" with these printers.
+
+	* db/source/printer/*: Corrected the ratings/texts for the Epson
+	  Stylus Pro 7000/7500/9000/9500/10000.
+
+	* lpdomatic/makeDefaults: Modified the config file support to not
+	  need a Perl library to make it easier to install lpdomatic without
+	  installing the whole Foomatic package.	
+
+2002-01-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Added '*PSVersion: "(3010.000) 652"' entry
+	  for GhostScript 6.52 to the PPD files.
+	
+2002-01-20  Manfred Wassmann  <manolo@NCC-1701.B.Shuttle.de>
+
+	* lpdomatic: Corrected the use of ConfigFile.pm.
+	* makeDefaults: Write "1;" at the end of ConfigFile.pm.
+	* foomatic-configure: Added $J to lprng filter options, (prints
+	  job title with a2ps).
+	* makeDefaults: Added code to write lib/Foomatic/ConfigFile.pm.
+	* lpdomatic: Adds --center-title=$optJ to a2ps command line.
+	  Enscriptcommand and debug flag can be specified in a config file
+	  in $ETCDIR/filter.conf. Syntax is tag\s*:\s*value.
+	  Added tabulator/indentation settings for emacs.
+
+2002-01-18  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/Epson-AcuLaser_C1000.xml: Added the Epson
+	  AcuLaser C1000 (Paperweight).
+
+	* db/source/*/*: Applied a patch by Tim Waugh (twaugh at redhat
+	  dot com) which makes the Perl one-liners for paper tray
+	  selection on PCL laser printers working on both Perl 5.6.0 and
+	  5.6.1.  The one-liners are in the GhostScript command lines of
+	  the drivers entries for the PCL laser drivers ("lj5gray",
+	  "ljet4", ...).
+
+	* db/source/printer/*: Updated text of the Epson EPL-5900/5900PS
+	  because of a bug in Epson's driver.
+	
+2002-01-17  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Added new Epson laser printer models:
+	  EPL-5900, EPL-N2120.
+
+	* db/source/*/*: Added new driver entries "epl2120" and "epl5900"
+	  for Epson-Kowa laser driver 1.0.4.
+	
+2002-01-16  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* cupsomatic, lpdomatic, ppromatic, directomatic: Auto-detection
+	  of file converters a2ps, enscript, mpage, usage of the printer's
+	  paper size setting for conversion to PostScript, with a2ps the
+	  possibility to print also PDF, images, etc with LPD/LPRng and
+	  with directomatic (CUPS and PPR do this by themselves, they use
+	  the converter only for the docs pages).
+
+	* foomatic-configure: Fixed bug of "-Q" with PPR not working for
+	  non-root users. CUPS queues are automatically set up with
+	  PPD-O-Matic PPD files now (use "--oldppd" to get CUPS-O-Matic
+	  PPD files), for PPD the PPD file is not stored twice any more, a
+	  symbolic link is set instead.
+
+	* README, ChangeLog, foomatic-configure.1.in: Updated documentation
+	  to take into account the new "--oldppd" option.
+	
+	* db/source/*/*: HP removed the "HP only" clause from the license
+	  of HPIJS, so HPIJS is free now.
+	
+2002-01-15  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Fixed some incompatibilities in the PDQ file
+	  generator which prevented HPIJS 1.0 from working with PDQ.
+	
+2002-01-14  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: Fixed bug of foomatic-configure stopping on
+	  directomatic printer configuration when there is no directomatic
+	  config file.
+	
+2002-01-13  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* cupsomatic/ppromatic: The PPD default values of float options were
+	  not read correctly, fixed.
+
+2002-01-12  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added HP e-printer e20 to HPIJS 1.0 datafiles.
+
+	* db/source/printers/*: Removed "Unverified" flags and cleaned up
+	  text in many datafiles of HP inkjet printers.
+
+	* foomatic-preferred-driver: Only set new default driver when the
+	  current one is not OK.
+
+	* foomatic-configure: Insert ":ppdfile=<PPD file name>:\" lines
+	  into /etc/printcap (for LPD/GNUlpr/LPRng), so that the graphical
+	  printing frontend GPR finds the PPD-O-Matic PPD files
+	  automatically.
+	
+2002-01-11  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added "bjc250gs" driver and Canon BJC-250ex
+	  printer.
+
+2002-01-10  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-gswrapper: Replaced "-sOutputFile=|cat >&3" by
+	  "-sOutputFile=|cat>&3" because the second one also works when
+	  "gs" is a wrapper script around the real GhostScript binary.
+	
+2002-01-09  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* cupsomatic: Numerical options given on the command line were
+	  ignored when using a PPD-O-Matic PPD file for the CUPS queue.
+	  Fixed.
+	
+2002-01-08  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* Makefile, makeDefaults, lpdomatic.8.in: Moved lpdomatic back to
+	  /usr/sbin.
+	
+2002-01-06  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: Added support for direct, spooler-less
+	  printing with directomatic, added auto-detection of PPR.
+
+	* directomatic: Added support for having a default printer.
+
+	* foomatic-datafile: Added "lprng" as possible datafile type (gives
+	  the same result as "lpd").
+
+	* foomatic-configure.1.in: Completed the list of possible options,
+	  corrected "-D" options ("Default", not "Delete").
+
+	* foomatic-printjob.1.in: Corrected command line for printing.
+
+	* README, USAGE: Updated to take into account all recent changes.
+	
+2002-01-06  Manfred Wassmann  <manolo@NCC-1701.B.Shuttle.de>
+
+	* foomatic-configure: Bails out if it encounters a lprng style
+	  printcap, like those created by lprngtool, as it would hose it
+	  otherwise.  This needs a better solution.
+	* foomatic-configure.1.in: Added description of the above problem.
+	* debian/control: The conflict with the cupsomatic-ppd package is
+	  indicated.
+
+2002-01-05  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* Makefile, makeDefaults: Added definitions for PPR and for
+	  spooler-less printing.
+
+	* db/source/driver/Postscript.xml: Updated the text to also
+	  mention that PPD files can be used also with the PPR spooler or
+	  the GPR printing frontend.
+
+2002-01-04  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* ppromatic: Made ppromatic stuffing the PostScript code of all
+	  PostScript options into the job, in contrary to CUPS PPR only
+	  stuffs in the code of options explicitly given on the command
+	  line or in the "Switchset".
+
+	* foomatic-configure: Added PPR support.
+	
+2002-01-03  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* ppromatic: Made it possible to have PPD files in other
+	  directories than /usr/share/ppr/PPDFiles, let ppromatic eat up
+	  data on STDIN to make documentation printing ("-i docs") working
+	  correctly. When original job is not completely read, PPR does
+	  not dequeue the print job and stops the printer because it
+	  assumes that the job was not correctly printed.
+
+2002-01-02  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added Compaq IJ1200 (Z42 clone), assigned Lexmark
+	  5700 drivers to Compaq IJ900 (5700 clone). Fixed text of Lexmark
+	  5700.
+
+	* db/source/opt/hpijs-Quality.xml: Fixed typo in human-readable
+	  text for 600-dpi-CMYK-normal quality.
+	
+2002-01-01  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/opt/hpijs-PageSize.xml: Worked around a bug in HPIJS
+	  1.0 which breaks the paper size setting via PostScript commands.
+
+	* lib/Foomatic/DB.pm: Added photo paper sizes for the HPIJS 1.0
+	  driver to the "getpapersize()" function.
+
+2002-01-01  Manfred Wassmann  <manolo@NCC-1701.B.Shuttle.de>
+
+	* debian/rules: see debian/changelog for details.
+
+2001-12-31  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/driver/*.xml: Updated URLs of the home pages for the
+	  "cZ11" and "c2070" drivers.
+	
+2001-12-30  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/Epson-EPL-5800L.xml: Added the Epson EPL-5800L
+	  laser winprinter.
+
+2001-12-23  Manfred Wassmann <manolo@NCC-1701.B.Shuttle.de>
+
+	* debian/foomatic-bin.manpages: Corrected section for lpdomatic
+	  manpage.
+	* lpdomatic.1.in: Made this manpage useful.
+	* foomatic-gswrapper.1.in: Minor editing.
+
+2001-12-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/hpijs*: Updated the entries for the "hpijs" driver
+	  to the new 1,0 release.
+
+	* db/source/printer/*: More updates on the comments of the HP
+	  inkjet printers.
+
+2001-12-19  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Updated comments and "Recommended driver"
+	  settings of the HP/Apollo printers for the new "hpijs" 1.0
+	  version.
+	
+2001-12-18  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Added/modified HP inkjets for the "hpijs" 1.0
+	  driver.
+	
+2001-12-17  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Applied a patch from Crutcher Dunnavant
+	  (crutcher@redhat.com) which sets all Perl variables in shell
+	  command lines ($poid, $drv. $libdir, ...) into single quotes, so
+	  that nothing breaks when a strange printer/driver ID or a
+	  strangely named directory is used.
+
+	* db/source/driver/*: Made Perl one-liner for paper tray selection
+	  in PCL laser printer driver XML files less memory-consuming.
+
+2001-12-16  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/Minolta-PagePro_1100L.xml,
+	  db/source/printer/642674.xml: Added the Paperweight "Minolta
+	  PagePro 1100L".
+	
+2001-12-14  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: Made "-f" (Force compilation) flag working
+	  for overview request ("-O").
+
+	* lib/Foomatic/DB.pm: Functions using "foomatic-combo-xml" check
+	  the cache before and use it, if appropriate files
+	  available. Printer ID set into single quotes in the
+	  "foomatic-combo-xml" command line, to not break with the new
+	  clear text printer IDs (Thanks to Crutcher Dunnavant,
+	  crutcher@redhat.com for his suggestions).
+
+	* Makefile: Let "make install" also install the man pages.
+	
+2001-12-13  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* directomatic: Possibility to use a printer definition file in
+	  ~/.foomatic/direct/ or in the current directory.
+
+	* Makefile, makeDefaults: Added /etc/ppr directory, fixed typo.
+
+2001-12-12  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Set links for the new location of the
+	  "Lexmark Foomatic Kit" in the comments of the database entries
+	  for the Lexmark Z22, Z23, Z32, Z33, Z52, Z53.
+	
+2001-12-11  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Made the "PaperDimension", "ImageableArea",
+	  and "PageRegion" entries in CUPS and generic PPD files working
+	  if the "PageSize" option is not the standard PostScript option,
+	  but a command line option or something else (as in the
+	  "ppmtocpva" or in the "pentaxpj" drivers.
+
+	* db/source/opt/2.xml, db/source/driver/c2050.xml: Drivers
+	  "c2050", "cZ11", and "cZ11somsom" had no "PageSize" option,
+	  fixed.
+	
+2001-12-11  Manfred Wassmann  <manolo@NCC-1701.B.Shuttle.de>
+
+	* directomatic.1.in manpage added.
+
+	* debian/: Bugfixes in the Debian specific files.
+
+2001-12-10  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Updated home page address and comment of the
+	  "lm1100" driver and added a "Brightness" option to that driver
+	  and replaced the "Monochrome" option by "Ink Type".
+
+	* db/source/drivers/lpstyl.xml: Re-hosted "lpstyl" driver on
+	  linuxprinting,org, original home page is dead. Modified the
+	  comments in the database entry file appropriately.
+	
+	* db/source/drivers/gdi.xml: Added filter for MagicFilter users to
+	  easily integrate this driver. Modified the comments in the
+	  database entry file appropriately.
+	
+	* db/source/*/*: Okipage 6w only works with "oki4w" 2.0, not with
+	  2.1. Modified the comments in the database entry files
+	  appropriately.
+
+	* db/source/printers/214153.xml: My Stylus Color 500 has problems
+	  with Gimp-Print 4.2. Modified the comments in the database entry
+	  files appropriately.
+
+	* db/source/opt/cZ11somsom-*: Set default values of the ink
+	  densities to 50 instead of 100.
+
+	* db/source/driver/cZ11somsom.xml: Corrected command line to make
+	  printing with the black cartridge working.
+
+	* db/source/printer/89152.xml: Comments cleaned up for Canon
+	  BJC-2000.
+
+	* db/source/printer/Canon-BJC-2010.xml: New printer entry: Canon
+	  BJC-2010.
+
+	* db/source/driver/bjc600.xml, db/source/opt/6.xml: Added Canon
+	  BJC-2010 to the "bjc600" driver.
+	
+	* db/source/printer/Canon-BJ-100.xml: New printer entry: Canon
+	  BJ-100.
+
+	* db/source/driver/bj200.xml: Added Canon BJ-100 to the "bj200"
+	  driver.
+
+	* db/source/printer/123584.xml: Added comments about the problems
+	  with the Xerox DocuPrint XJ8C.
+
+	* db/source/printer/Pentax-PocketJet*: Added the ultra-portable
+	  printers from Pentax.
+
+	* db/source/*/pentaxpj*: Added "pentaxpj" driver for the
+	  ultra-portable Pentax PocketJet printers.
+
+2001-12-09  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* cupsomatic: Added support for the accounting facility of CUPS.
+	  Only works with $debug = 0 and when GhostScript is rendering
+	  the PostScript.
+
+	* foomatic-ppdload, lib/Foomatic/PPD.pm: "new PPD" and "new
+	  UIElem" replaced by "new Foomatic::PPD" and "new
+	  Foomatic::UIElem", otherwise the "new" methods will not be found
+	  in the respective libraries.
+
+	* db/source/printer/Lexmark-Z43.xml: Updated the comments.
+	
+2001-12-07  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* directomatic: New filter for spooler-less printing. See in the
+	  comments in the beginning how to use it.
+
+	* Makefile: Added definitions for PPR, added directomatic
+	  and ppromatic to be installed
+
+	* makeDefaults: Added definitions for PPR, moved lpdomatic to
+	  /usr/bin
+
+	* lpdomatic.1.in: lpdomatic in /usr/bin => "man 1 lpdomatic"
+
+	* foomatic-datafile: Added "direct" data file type for 
+	  Direct-O-Matic
+
+	* lib/Foomatic/DB.pm: Modified comments of the LPD-O-Matic printer
+	  description file (generated by the function "getlpddata()")
+	  because these files are also used for Direct-O-Matic.
+	
+2001-12-07  Manfred Wassmann  <foomatic@NCC-1701.B.Shuttle.de>
+
+	* Makefile: Split the install target into install-bin and
+	  install-db. Added PHONY target to mark targets not related to
+	  real files.
+	* Manpages: Added a script to generate manpages with correct
+	  pathnames from files named <manpage>.<section>.in.
+	  Created more or less useable manpages for all binaries.
+	* debian: Bootstrapped a debian directory for building Debian
+	  packages.
+
+2001-12-06  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* cupsomatic: Corrected link to documentation web page in the
+	  comments in the beginning of the script.
+	
+2001-12-04  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* cupsomatic, lpdomatic, ppromatic: Cleaned up multi-processing,
+	  now the parent processes wait for their children to finish and
+	  the interprocess communication pipes are closed after use. The
+	  main process waiting for their children to exit fixes especially
+	  a problem of lpdomatic: LPRng resetted the printer port when the
+	  lpdomatic was ready, but in reality lpdomatic sub-processes were
+	  still working on the job, which lead to incomplete pages being
+	  printed (Bug #486096 on SourceForge). Also updated the comments
+	  in the beginning of the files
+
+	* foomatic-datafile: Added PPR support.
+
+	* foomatic-configure: Added the "-w 1" option to "nc" used in the
+	  $postpipe for LPD, otherwise "nc" only exits a rather long time
+	  after all data has be transmitted to the printer. This prevents
+	  the new lpdomatic from exiting immediately after the job has
+	  finished and so it takes a longer time until the next job
+	  starts.
+
+	* lib/Foomatic/DB.pm: Used "/PageSize[...]" instead of
+	  "/PageRegion[...]" in the "*PageRegion" option of the
+	  PPD-O-Matic PPD files becasue GhostScript does not understand
+	  "/PageRegion[...]" (found this out during tests of PPR, which
+	  uses the "*PageRegion" option and not the "*PageSize" option to
+	  set the paper size.
+	
+2001-12-02  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* ppromatic: Completed first version of ppromatic: Added error and
+	  signal handling. Introduced back channel from child processes to
+	  main process and let main process wait until all children finish,
+	  to not loose any error message or exit status to report to PPR.
+	
+2001-11-30  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added some comments about the similarity of the
+	  Sharp and Xerox inkjets.
+	
+	* db/source/opt/207.xml: Made "Model" option of "pcl3" having only
+	  the correct model entry as possible choice (as "Model" option of
+	  "gimp-print"/"stp".
+	
+2001-11-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-preferred-driver: Higher priority for "pcl3" against
+	  "sharp.upp", the support of the "pcl3" driver for the Sharp and
+	  Xerox inkjets is much better since version 3.3 of "pcl3".
+
+	* db/source/*/*: Added Sharp/Xerox printers to list of printers
+	  supported by "pcl3" because of better Sharp/Xerox support by
+	  "pcl3" version 3.3, also changed the recommended driver of the
+	  Sharp and Xerox inkjets to "pcl3" and the functionality to
+	  "Mostly".
+	
+2001-11-24  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* ppromatic: Interface for the spooler PPR (ppr.sourceforge.net)
+	  introduced. To set up printer download PPD-O-Matic PPD file from
+	  your driver's page of the linuxprinting.org database (or use
+	  "foomatic-datafile -t ppd ...") and do
+
+	    cp ppromatic /usr/lib/ppr/interfaces/
+	    cp <downloaded ppd file> /usr/share/ppr/PPDFiles/
+	    ppad interface <queue> ppromatic <address>
+	    ppad options <queue> backend=<interface>
+	    ppad ppd <queue> <ppd file without path>
+	    (Addiyional command to set up paper trays)
+
+	  <interface> means the PPR interface name for the desired printer
+	  connection type (all in /usr/lib/ppr/interfaces/: parallel,
+	  serial, tcpip, lpr, smb, atalk, ...).
+	  <address> means the printer address as needed by the interface
+	  (/dev/lp0 for parallel, printer.domain.com:9100 for tcpip, ...)
+	  <ppd file without path> is the name under which you have saved
+	  your downloaded PPD file. Do not specify the path 
+	  /usr/share/ppr/PPDFiles/
+
+2001-11-23  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* cupsomatic: Let numerical option default settings in be used
+	  when a printer is used with a PPD-O-Matic PPD file.
+
+2001-11-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Made HTML display of how to invoke a driver
+	  working correctly with the new XML Foomatic and enhanced it,
+	  especially for tricky command lines ("Execution Details" pages).
+	
+	* db/source/opt/*: Corrected the "Required" state for many
+	  options, to get the "Execution Details" pages correct.
+	
+2001-11-21  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/drv_z42: New web site for "drv_z42".
+	
+2001-11-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Set "Recommended driver" field
+	  (<driver>..</driver>) in all non-Paperweight printer entries.
+
+2001-11-19  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: The Epson Stylus C70/C80 do 2880x1440 dpi
+	  under free OS. Added comment in the appropriate database
+	  entries.
+
+2001-11-18  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* README, USAGE: Added info about the PPD-O-MATIC PPD files. 
+	  Especially USAGE contains info about printing with graphical
+	  interfaces and out of applications now.
+	
+2001-11-16  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-preferred-driver: Added the "sj48" driver in the list,
+	  so that when one adds "omni" as the last entry, the "sj48" will
+	  get priority.
+	
+2001-11-15  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* cupsomatic: Added support for GPR as CUPS printing frontend.
+
+	* db/source/*/*: Added Lexmark Z43 (supported by "drv_z42"
+	  driver), corrections on Lexmark Z42.
+	
+2001-11-14  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Added generation of a generic purpose PPD
+	  file (PPD-O-Matic), made generated PDQ scripts using settings
+	  added by an application using the PPD file, fixed bug of PDQ not
+	  printing when driver command line is composed of various shell
+	  commands. Removed some replacements of special characters in the
+	  generation of PDQ config files, they caused some driver command
+	  lines to get "overquoted" characters.
+
+	* cupsomatic, lpdomatic: Added support for the new generic PPD
+	  files, jobs are searched for settings done by applications using
+	  these PPD files.
+
+	* foomatic-datafile: Added "-t ppd" option to generate generic PPD
+	  files.
+
+	* foomatic-configure: Now for every queue a generic PPD file is
+	  created and maintained as /etc/foomatic/<queuename>.ppd.
+	
+	* db/source/driver/oki4w.xml: Comments updated for oki4linux 2.1
+
+	* db/source/*/*: Resolution of Okidata OL 410e fixed (300 dpi only
+	  with "ljet4", RedHat bug #43120).
+	
+2001-11-13  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/driver/*: Added "-Mutf8" to the "perl" calls in the
+	  command line of the PCL/PCL-XL laser printer drivers with tray
+	  selection, otherwise Perl 5.6.0 and older cannot handle hex
+	  representations of binary strings in the Perl commands.
+	
+2001-11-08  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/opt/*: Fixed default resolutions for the "eps9mid" and
+	  "eps9high" drivers.
+	
+2001-11-07  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/opt/*: For the Epson laser printer drivers (EPL,
+	  AcuLaser) fixed forgotten default values for MediaType and
+	  default input tray for the colour models.
+
+2001-10-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Perfect support for the Epson Stylus
+	  C70/C80 with Gimp-Print 4.1.99b4.
+	
+2001-10-23  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Changed the comments/ratings of the Epson
+	  AcuLaser colour printers according to results of tests at Epson
+	  Paris.
+
+	* foomatic-preferred-driver: Given priority to the "alcXXXX"
+	  drivers on Epson color inkjets, they print in color.
+
+2001-10-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Added comment about up/download of data to
+	  the photo cards in the card reader of the HP PhotoSmart
+	  printers.
+	
+2001-10-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/630066.xml, db/source/driver/*: Removed
+	  duplicate entry for the HP DeskJet Plus.
+	
+2001-10-16  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added the Epson Stylus Photo 820.
+
+2001-10-15  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added the HP OfficeJet R65 and R80 printers.
+
+	* db/source/*/*: Added more Samsung SmartGDI/PassThru printers:
+	  Samsung ML-1010, 1020, 200, 210.
+
+2001-10-13  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Some newer Epsons (Stylus Photo 785, 875, 895)
+	  are USB only, corrected database entries.
+
+2001-10-11  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Re-rated Epson Stylus C60 and Epson Stylus Scan
+	  2500 as "Perfectly" supported.
+
+	* USAGE: Fixed text, "postpipe", not "backpipe".
+
+2001-10-10  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Removed HP LaserJet 6L from "lj5gray"/"lj5mono"
+	  drivers, this combo is reported not to work.
+
+	* db/source/printer/*: Changes on the text of the HP LaserJet 5L,
+	  5P, and 6L printers.
+
+2001-10-09  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added Samsung SmartGDI/PassThru printers: Samsung
+	  ML-1000, 1200, 1210, 1220, 5080, 6040.
+
+	* db/source/*/*: Modified the Foomatic data for the "drv_z42" driver
+	  to fit to version 0.3 of the driver.
+
+	* db/source/*/*: Assigned drivers to the HP PhotoSmart P100 printer.
+
+2001-10-08  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/Epson-Stylus_C[78]0.xml: Changed rating from
+	  "Paperweight" to "Partially", Gimp-Print 4.1.99b3 provides
+	  preliminary support.
+
+	* db/source/*/*: Added HP DeskJet 1120C to the printers supported
+	  by the "hpijs" driver.
+	
+2001-10-06  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added the printers HP LaserJet 1000, DeskJet
+	  845C, 940C, PhotoSmart P100, P1115, P1315.
+
+	* db/source/*/*: Corrected URLs for the HP inkjet printers.
+
+	* db/source/opt/hpijs-PageSize.xml: Added A6 and Photo paper sizes
+	  for the "hpijs" driver,
+	
+2001-10-04  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-combo-xml.c: Added an "#include <stdlib.h>" to make
+	  the code working on IA64.
+
+2001-10-03  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* README, USAGE: Updates on the documentation.
+
+	* db/source/*/*: Fixes on the "cljet5" driver.
+
+	* db/source/*/*: Added options to the drivers "cdj500", "cdj550",
+	  "pj", "pjxl", "pjxl300", "declj250", and "dj505j".
+
+	* db/source/driver/*: Updated links to the GhostScript web pages.
+
+	* foomatic-preferred-driver: Correction for the DEC LJ250.
+	
+2001-10-02  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added paper tray selection to all the other PCL
+	  laser printer drivers. Bugfixes on paper tray selection for the
+	  "ljet4" driver.
+
+	* db/source/*/*: Added "cljet5c" driver (Color LaserJet 5 in
+	  Contone mode).
+	
+	* db/source/*/*: Added "ljet4d" driver ("ljet4" with PCL Duplex).
+
+	* foomatic-preferred-driver: Updated for the new drivers.
+	
+2001-10-01  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added paper tray selection option to the PCL-XL
+	  drivers ("lj5gray"/"lj5mono", "pxlmono"/"pxlcolor") and to the
+	  "ljet4" driver.
+
+2001-09-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added driver "drv_z42" for the Lexmark Z42,
+	  re-rated the printer as "Partially" supported.
+
+	* lib/Foomatic/DB.pm: Assured that the "PageSize" option is always
+	  present in CUPS PPD files, evwn when it has only one choice,
+	  CUPS does not work when there is a PPD file without "PageSize"
+	  option.
+
+	* foomatic-combo-xml.c: Replaced an "strcat" by an "strcpy" when
+	  setting the default value for an option because otherwise there
+	  appear two values in the string for the default value.
+	
+	* db/source/*/*: Added GhostScript pre-filtering facility to the
+	  "Postscript" driver, this allows to use additionally installed
+	  GS fonts or converting to a lower PostScript level.
+	
+2001-09-28  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Made all file creation be done with "umask
+	  0002", so that the cache can be deleted by anyone in the group
+	  of the cache creator.
+
+	* db/source/*/*: Added Foomatic data for the Epson Stylus Color
+	  640 UPP files which come with GhostScript 6.50 and newer.
+
+	* db/source/printer/HP-DesignJet_750.xml: Corrected bug in printer
+	  ID, which prevented entry from showing up correctly on
+	  www.linuxprinting.org.
+	
+2001-09-27  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added the Lexmark Z82.
+
+	* db/source/*/*: Made the "pbm2l7k" driver not needing 120 MB swap
+	  with GS 6.x and newer.
+
+	* db/source/*/*: Added Foomatic data for the UPP files
+	  "s400a1.upp" and "s400b1.upp".
+	
+	* db/source/printer/123776.xml: Corrections in the text about the
+	  BJC-8200.
+	
+	* db/source/printer/Canon-S600.xml: Added the Canon S600.
+
+	* db/source/*/*: Added Foomatic data for the UPP files for the
+	  Canon BJC-8200 which come with GhostScript 6.50 or newer.
+
+	* db/source/driver/pcl3.xml: Fixed typo.
+
+2001-09-26  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-combo-xml.c: In the "loadfile()" function "close" was
+	  used instead of "fclose". This kept all files open and lead to
+	  problems with more than 1000 printer models.
+
+	* db/source/*/*: Added the Xerox DocuPrint N4512, corrected comments
+	  for the HP PSC 950 and the Epson Stylus C80.
+	
+2001-09-25  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-preferred-driver: Given priority to the lxm3200 driver
+	  against Gimp-Print/stp, the support of the Lexmark 3200 by
+	  Gimp-Print is broken.
+
+2001-09-24  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-combo-xml.c: Fixed a bug of not setting the high scores
+	  for the constraints.
+	
+2001-09-22  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: "checkpc -f" after any change on an LPRng
+	  system. LPRng refuses to print when one file has wrong
+	  permissions.
+	
+2001-09-13  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* cupsomatic: Made the "sides" (Duplex) option of CUPS working
+	  with printers using Foomatic.
+
+	* foomatic-configure: SIGHUP to LPRng daemon when setting the
+	  default printer or deleting one.
+
+2001-09-12  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Added the Lexmark Z23, Z33, and Z53
+
+	* db/source/printer/486066.xml: The Lexmark Z12 does not print
+ 	  ain text
+
+	* db/source/printer/328553.xml: With the current Gimp-Print the
+	  Lexmark Z52 works "Perfectly".
+
+	* db/source/printer/*: Updated and corrected text of the Lexmark
+	  Z23, Z33, and Z52.
+
+	* db/source/printer/62720.xml, db/source/driver/lj5*: The HP
+	  LaserJet 5L does not work with the lj5gray/lj5mono drivers.
+
+	* cupsomatic: All enumerated options with choices "On", "Off",
+	  "Yes", "No", "True", or "False" did not work with CUPS. This is
+	  fixed now.
+	
+2001-09-03  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: Possibility to set a system-wide default
+	  printer for all spoolers, for CUPS and PDQ, non-root users can
+	  also set a personal default printer. Due to the architecture of
+	  LPD a queue named "lp" will be renamed when another queue is set
+	  as the default queue.
+
+	* Makefile, makeDefaults: Added the "lpoptions" utility of CUPS
+	  which is needed to set a remote printer as default or to set
+	  a personal default printer for non-root users.
+
+	* USAGE: Added information about the new default printer setting
+	  facility.
+
+	* README: Adapted to all recent changes.
+
+	* TODO: Removed the topic about speed and memory consumption, this
+	  is solved by foomatic-combo-xml.c now.
+	
+2001-09-02  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-combo-xml.c: Added functionality for generating the
+	  overview XML file ("-O" option). Makes the overview XML
+	  generation much faster, less than a second on most machines.
+
+	* lib/Foomatic/DB.pm: Let the overview XML generation be done
+	  preferrably by foomatic-combo-xml.c.
+
+	* Makefile: Added the removal of the foomatic-combo-xml binary
+	  to the "clean" section, let foomatic-preferred-driver be
+	  installed in /usr/sbin.
+
+	* foomatic-preferred-driver: Bugfix: Often default driver entries
+	  were not inserted into the printer XML file.
+	
+	* db/source/driver/ppmtocpva.xml: Added the Alps MD-1500 printer.
+	
+2001-08-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Several fixes on the comments of the HP
+	  OfficeJets.
+
+	* db/source/*/*: Added the Apple LaserWriter 4/600.
+
+	* db/source/printer/605074.xml, db/source/printer/609714.xml:
+	  Correction: The HP LaserJet 5Si and 3200se support PJL.
+
+	* db/source/driver/lj5gray.xml: Removed duplicate entry for the
+	  HP LaserJet 5Si.
+	
+2001-08-28  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-combo-xml.c: C program to build XML files for
+	  printer/driver combos, around 600 times faster than the perl
+	  routines in lib/Foomatic/DB.pm (one Gimp-Print combo in 0.5-1.5
+	  sec. foomatic-compiledb in a few minutes), needs less than 10 MB
+	  of memory. Pre-building of the database for distros not needed
+	  any more.
+
+	* lib/Foomatic/DB.pm: Make foomatic-combo-xml.c being preferrably
+	  used for building printer/driver combo data.
+
+	* Makefile, makeDefaults: Integration of foomatic-combo-xml.c.
+	
+2001-08-26  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/driver/*: Removed printer entry 207945 from the printer
+	  list of the "laserjet" and "stp" drivers, the printer was deleted.
+	
+2001-08-25  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/HP-DesignJet_750.xml: added HP DesignJet 750,
+	  it is supported by Gimp-Print now.
+	
+2001-08-24  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added a whole bunch of japanese printers and
+	  drivers, thanks to Crutcher Dunnavant from Red Hat.
+
+	* db/source/driver/md2k.xml: Added the Alps MD-1500.
+
+	* foomatic-preferred-driver: Priorities for the japanese drivers.
+
+	* db/source/*/*: Corrected driver names for Epson's colour lasers.
+
+2001-08-23  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Added the recent Epson laser printers: Epson
+	  EPL-5800, EPL-N1600, EPL-N2050, EPL-N2050+, EPL-N2750, AcuLaser
+	  C2000, C8500.
+
+	* db/source/printer/Brother*: Small adjustments of the entries.
+
+	* db/source/printer/*: Added the new Epson lasers to the drivers
+	  "Postscript", "pxlmono", "lj5gray", "lj5mono", "cljet5".
+
+	* db/source/*/*: Added the Epson laser printer drivers provided
+	  by Epson: "epl5800", "epl2050", "epl2050p", "acl2000", "acl8500".
+	
+	* foomatic-preferred-driver: Epson laser printer drivers.
+
+	* db/source/printer/641170.xml: Removed duplicate entry for the
+	  Canon LBP-800.
+
+2001-08-21  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/*/*: Added new Brother printers: HL-1440, H:-1450,
+	  HL-1470N, HL-2460, HL-2460N, HL-2400CeN, HL-3400CN, MFC-P2500.
+
+	* db/source/*/*: Added some more Brothers to the hl1250 driver.
+
+	* db/source/opt/207.xml, db/source/opt/208.xml: Corrected default
+	  settings for the Apollo P-1200 with the pcl3 driver. It needs
+	  the the model setting "Unspecified old model" and a CMY colour
+	  mode.
+
+	* db/source/driver/hpijs.xml, db/source/opt/hpijs-Model.xml,
+	  db/source/opt/hpijs-Quality.xml, db/source/printer/413737.xml:
+	  The Apollo P-2200 works with drivers for the HP DeskJet 612C,
+	  taken this into account.
+
+	* db/source/printer/Okidata-ML_32?.xml, db/source/driver/okiibm.xml:
+	  Added the printers Okidata ML 320/321.
+
+	* db/source/printer/63200.xml: Added comment to the IBM 4019.
+
+	* db/source/printer/317321.xml, db/source/printer/607474.xml:
+	  Added instructions how to change the cartridges without needing
+	  special software.
+
+	* db/source/printer/24832.xml: Added useful info about the NEC P6
+	  plus.
+
+	* db/source/driver/epsonc.xml: This driver is needed to print on
+	  the NEC PinWriter P6/P6 plus in colour.
+
+	* foomatic-preferred-driver: Given priority to the "necp6" driver
+	  against the "epsonc" because in most cases the NEC PinWriter P6
+	  is used without colour add-on.
+
+	* db/source/*/*: Fixed bug in hpijs driver data: The docs talk about
+	  "DJ6xxP" for the "DeviceName" setting for photo-capable DeskJet
+	  6xx models, in reality "DJ6xxPhoto" has to be used.
+
+	* db/source/driver/sharp.upp.xml: Explained how to install
+	  "sharp.upp".
+
+2001-08-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/337577.xml: Duplicate entry for the HP OfficeJet
+	  G55, deleted.
+
+	* db/source/printer/Sharp*: Added the printers Sharp AJ-1805,
+	  AJ-2005, and AJ-2100.
+
+	* db/source/printer/*: Updated the entries for the Xerox DocuPrint
+	  M750 and M760, they print with "sharp.upp" and are both partially
+	  working.
+
+	* db/source/driver/sharp.upp.xml: Added the new Sharp printers 
+	  (AJ-1805/2005) and the Xerox DucuPrint M750/M760.
+
+	* db/source/driver/hl1250.xml: Updated the URL of the driver's home
+	  page.
+
+	* db/source/driver/hl1250.xml, db/source/opt/53.xml: Removed the
+	  "Model" option from the "hl1250" driver, the GhostScript option
+	  "-sDEVICE=hl1240" or "-sDEVICE=hl1250" only determines the
+	  default resolution which is anyway overridden by Foomatic.
+
+	* db/source/opt/161.xml: The media source selection for the
+	  "Postscript" driver only works for HP printers, restricted to HP.
+	
+2001-08-19  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/printer/*: Added HP and Apollo printers: Apollo P-2100,
+	  P-2150, HP DeskJet 816C, 980C, e-printer e20, PhotoSmart P1215,
+	  P1218, OfficeJet K60, K80, V40, PSC 300, 750.
+
+	* db/source/*/hpijs*: Updated the data for the inkjet driver of HP
+	  ("hpijs").
+
+	* db/source/*/DJ*: Deleted the old data of the HP driver (drivers
+	  "DJxxx").
+
+	* db/source/*/*: Updated all information about the multifunction
+	  devices of HP, they are all capable for scanning with free 
+	  software.
+
+	* db/source/printer/641138.xml: Duplicate entry for the Canon
+	  LBP-800, deleted.
+
+	* db/source/printer/207945.xml: Duplicate entry for the HP LaserJet
+	  2, deleted.
+
+	* foomatic-preferred-driver: Added new "hpijs" driver.
+
+2001-08-17  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* Makefile: Moved foomatic-configure from /usr/sbin to /usr/bin.
+	
+	* db/source/printer/Epson-Stylus_C[24]0*: Split up the entries for
+	  the Epson Stylus C20/C40 into the SX and UX models. This is needed
+	  for the Gimp-Print GhostScript driver.
+
+2001-08-16  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: Support for printers on NetWare (with LPD
+	  and LPRng), output of the printer list both as root and normal
+	  user, LPRng SIGHUP after adding a new queue, spooler detection
+	  bug fix.
+	
+2001-08-11  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: Fixed bug of options not being conserved
+	  when changing parameters of a CUPS or PDQ printer. $olddatablob
+	  was defined at the wrong place. Added paths for rlpr, nc, and
+	  smbclient to Defaults.pm, so these commands can also be called
+	  when foomatic-configure is running in an environment without
+	  $PATH, for example during the installation of a distro.
+
+	* Makefile, makeDefaults: Paths for rlpr, nc, and smbclient added.
+	
+2001-08-05  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* db/source/opt/ppmtocpva-solidblack.xml: Added option "-solidblack"
+	  to "ppmtocpva" driver, it is new in the version 1.0 of the driver.
+
+	* db/source/printer/168201.xml: Corrected the resolution of the
+	  Citizen Printiva 600C.
+
+	* db/source/driver/ppmtocpva.xml: Added the old Alps MD models to
+	  the printers supported by the "ppmtocpva" driver.
+
+2001-08-01  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-cleanupdrivers: Removes all driver entries without
+	  command line (<prototype>..</prototype>) from a local Foomatic
+	  database. So frontends do not display "unusable" printer/driver
+	  combos.
+
+	* foomatic-preferred-drivers: Simple program which adds a
+	  <driver>..</driver> entry to every printer. The best driver is
+	  determined by a ranking. When one deletes all XML files for
+	  drivers which are not available on the system (and adds XML files
+	  for additional drivers) all printers will have the best driver
+	  of the current system as preferred driver.
+
+	* lib/Foomatic/DB.pm: Exported "get_overview" for
+	  foomatic-preferred-drivers.
+
+	* db/source/*/*: Added the newest inkjets of Epson and the newest
+	  lasers of HP: Epson Stylus C20, C40, Epson Stylus Photo 785,
+	  875, 895, Epson Stylus Pro 10000, HP LaserJet 1200, 1220, 2200,
+	  3200m, 4100, 8150, 9000, HP Color LaserJet 4550.
+
+	* db/source/*/*: Corrected driver list for the HP LaserJet 3200se,
+	  it is the same as for the HP LaserJet 3200 now.
+
+	* db/source/driver/bjc600.xml: Removed the Canon BJC-5000 from the
+	  list of supported printers, it is a paperweight for sure.
+
+	* db/source/printer/474354.xml: Removed this extra entry for the
+	  Canon BJC-85. It was a relict of the time when the database was
+	  publicly editable.
+
+2001-07-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Take preferred driver (<driver>..</driver>
+	  tag) into thw overview listing (overview.xml, foomatic-configure
+	  -O).
+
+	* db/source/opt/69.xml: Made the "Normal" quality with the "cdj880"
+	  driver available again for all printers. With GNU GhostScript
+	  6.51 it works without problems.
+	
+2001-07-25  Till Kamppeter <till.kamppeter@gmx.net>
+	
+	* foomatic-configure: When one uses the -P option with a printer
+	  and a driver to obtain the datablob of this combo, one can also
+	  supply a queue to apply the default options of that queue to the
+	  datablob of the chosen combo. This can be used when one wants to
+	  change the driver used for a queue with the help of a
+	  frontend. The obtained datablob can be used to generate the
+	  option dialog in this situation.
+
+	* lib/Foomatic/DB.pm: The option and choice value arrays are
+	  sorted now (by a standard option list, by the "normalizename"
+	  function which is already used for printer names on the web
+	  site, and alphabatically/case-insensitive), so in XPDQ, KUPS,
+	  QtCUPS, XPP, the upcoming new printerdrake (Mandrake 8.1), and
+	  other frontends the options and choices will appear sorted.
+
+2001-07-21  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: Added the possibility to copy/clone queues,
+	  now queues can be transferred to another spooler conserving all
+	  settings, including the default option settings. Restructured
+	  all queue query functions, now they can also generate complete
+	  Perl datablobs with all option default settings (even settings
+	  which XPDQ has written into /etc/pdq/printrc or which KUPS has
+	  written into the PPD files) and all queue settings as the
+	  connection URI, description, location, ... (in the new
+	  'queuedata' field). This facility can be used by graphical
+	  frontends. Now foomatic-configure also supports to be called
+	  unser different names and to load the default spooler choice
+	  from a file.
+
+2001-07-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: Restructured all queue setup functions, now
+	  it is possible with all the spoolers to modify queues by only
+	  supplying the items which are changed on the foomatic-configure
+	  command line. One can even delete the description or location
+	  entries or switch from a queue with driver to a raw
+	  queue. Default settings for options do not get lost when one
+	  changes the driver and the new driver has options with the same
+	  name. Also option settings done with the "native" tools of CUPS
+	  and PDQ do not get lost on any kind of manipulation done with
+	  foomatic-configure. Extra Perl datablob files removed to avoid
+	  problems with maintaining redundant data repositories. Datablobs
+	  are now in the main config files (they were already there for
+	  CUPS and LPD/LPRng, for PDQ they are addad now. Output of
+	  datablobs for frontends will be done by a special command line
+	  option. The query functions are cleaned up now.
+
+	* lib/Foomatic/DB.pm: Added Perl datablob to the PDQ datafiles,
+	  added a line break to the end of all "die" and "warn" messages
+	  to clean the error message output.
+
+2001-07-19  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-printjob: Fixed command line option translation when
+	  printing with PDQ (numerical options).
+
+	* foomatic-configure: XML-Combo data in /etc/foomatic is gzipped
+	  now (compression factor 10), Perl datablobs with the
+	  user-supplied default option settings are stored in
+	  /etc/foomatic, too (gzip factor 8). They serve for frontends to
+	  get the available options and make it easier to transfer the
+	  queues without loss of option settings.
+	  Setup function for LPD/LPRng restructured, it allows modifying a
+	  queue only supplying the information which changes on the
+	  foomatic-configure command line. One can even change the driver
+	  and all default settings of options with the same name in the
+	  old and the new driver are conserved.
+
+	* lib/Foomatic/DB.pm: Fixed help page of PDQ (numerical options).
+	
+2001-07-18  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-printjob: Links named "lp", "lpr", "lpq", "lprm", and
+	  "lpc" to the foomatic-printjob executable can be made and the
+	  program does the action of the appropriate command when called
+	  through one of the links, job list ("lpq") output of LPRng
+	  filtered so that it comes out in the same form as the job
+	  listings of the other spoolers, possibility to save a default
+	  spooler.
+	
+2001-07-17  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-printjob: Added all missing job listing and job removal
+	  functions. Added functionality for advanced queue and job
+	  control. Updated help message.
+
+	* Makefile: Added CUPS commands for queue and job control.
+
+	* makeDefaults: Added CUPS commands for queue and job control.
+	
+2001-07-16  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-printjob: Added job listing (query) and job removal
+	  functions for PDQ. Added job listing function for LPD. Added
+	  line breaks at the end of all "die" calls so that the line
+	  number is not shown when the program executes the appropriate
+	  "die",
+
+	* foomatic-configure: Added line breaks at the end of all "die"
+	  calls.
+	
+2001-07-15  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-printjob: Coomand line options which are not used by
+	  foomatic-printjob are passed to spooler-specific printing
+	  command, Support for printing multiple copies with PDQ, printer
+	  queue can also be specified with the "-d" option.
+	
+2001-07-14  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-printjob: Exit status of the spooler's printing command
+	  is passed back to the user as the exit status of
+	  foomatic-printjob, GNU-lpr (VA-Linux) is auto-detected and the
+	  options are passed appropriately. Clean-up of the help message
+	  (option -h).
+
+	* foomatic-configure: Support for setting default options, help
+	  message cleaned up.
+	
+2001-07-13  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Removed backquote from the boolean option
+	  example in the PDQ help page. It broke the shell script for
+	  printing the page. Preliminary fix for foomatic-configure not
+	  exiting when building combo data with the Gimp-Print Foomatic
+	  data installed: Flushing memory cache during build after
+	  treatment of every option.
+
+	* foomatic-printjob: Fixed option handling,
+
+	* foomatic-configure: Set automatically a search path to
+	  /etc/foomatic/pdq into the /usr/lib/pdq/printrc file, so that
+	  the Foomatic driver description files are found.
+	
+2001-07-11  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* Makefile: The INSTALLPREFIX facility was broken. Fixed.
+
+	* USAGE: Added user instructions.
+
+	* README: Pointed to new USAGE file
+	
+2001-07-05  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* sharp.upp: New driver for the Sharp AJ-1800/2000 inkjet printers
+	
+2001-07-02  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* Makefile: Added foomatic-printjob to the user programs to be
+	  installed
+	
+2001-07-01  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: Now the combo XML data and not only the
+	  printer data is stored in /etc/foomatic for every queue, the
+	  "-X" option allows also getting combo data by supplying both a
+	  printer and a driver, the logfile for the LPD/LPRng queues,
+	  /var/log/lp-errs is touched now when a queue is added, so that
+	  it is made sure that it exists.
+
+	* foomatic-printjob, Makefile, makeDefaults: First sketch of
+	  foomatic-printjob: Now one has basic printing functionality with
+	  options on all spoolers.
+
+2001-06-30  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure, Makefile, makeDefaults: PDQ support added:
+	  Now we have a command-line-based administration interface for
+	  PDQ and the basic functionality of foomatic-configure is
+	  completed. Fixed bug in help message of foomatic-configure. In
+	  LPD "rlpr" is only used for remote LPD queues with filter, for
+	  raw queues the "rm" and "rp" tags in the /etc/printcap file are
+	  used.
+	
+2001-06-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: Added LPRng support (without
+	  magicfilter). The support is done by adding the differences
+	  between LPD and LPRng in the functions for handling LPD. Fixed
+	  autodetection of LPRng (typo).
+2001-06-29  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lpdomatic: Fixed: The documentation page did not show the
+	  correct lpr command line example for LPRng and when lpdomatic
+	  does not find the printer driver description file (*.lom) it did
+	  not put the file name into the error message.
+
+	* Makefile: Removed comment that LPRng is not supported yet.
+	
+2001-06-28  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* lib/Foomatic/DB.pm: Fixed several bugs in the function
+	  getpdqdata(): PostScript/PJL options were not prepended to the
+	  job data/the GhostScript output, let the choice names be
+	  <option>_<choice> and not only <choice>, because in PDQ one
+	  provides only the choice name and not the option name and the
+	  choice name on the command line. So options with the same choice
+	  names (as "Duplex" and "Manualfeed" on the LaserJet 4050 with
+	  "ljet4" driver, which have both "On" and "Off" as choices) are
+	  ambiguous, added "docs" option to print documentation page with
+	  PDQ, fixed boolean options, they were broken. Text file printout
+	  done with "mpage" now.
+
+	* cupsomatic, lpdomatic: Fixed bug of "This option corresponds to
+	  a PJL command" not appearing on documentation page (option
+	  "docs").
+	
+2001-06-27  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: Query function for CUPS, corrected bug in
+	  function dump_config where the <queue ...> tag was closed by
+	  </foomatic>, fixed query function for LPD, so that it supports
+	  all backend types, remote LPD printing under LPD done with
+	  "rlpr".
+
+	* Makefile, makeDefaults: Added /etc/cups/printers.conf.
+	
+2001-06-26  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: Support for adding/modifying and removing
+	  CUPS queues (for all backends supported by CUPS).
+	
+	* cupsomatic: Parsing of options embedded in the document
+	  fixed. For accessing the value of an enumerated option $avalue
+	  instead of $value was used, so the values read into $value were
+	  not inserted into the option list. Search the first 1000 lines
+	  for options because after polling the PJL options from a printer
+	  or with a PostScript printer with many features in its PPD file
+	  the 100 lines can easily be exceeded.
+
+	* lpdomatic/cupsomatic (common part): The support of PJL option is
+	  marked by the existence of the "pjl" key in the Perl data set of
+	  the printer/driver combo. So "if (defined($dat->{'pjl'}))" and
+	  not "if ($dat->{'pjl'})" has to be asked to check PJL support.
+	
+2001-06-25  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: Support for adding CUPS queues (all queue
+	  types supported by "lpadmin"). Bugfixes in queue setup for LPD:
+	  Make directories before the backend script for raw queues is
+	  written to there, Rename old $etcfile and $etcxfile also when
+	  one sets up a raw queue.
+	
+	* Makefile, makeDefaults: Set default paths and file names for CUPS,
+	  let cupsomatic be installed in the CUPS filter directory.
+
+2001-06-24  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* foomatic-configure: Now one can configure all types of
+	  LPD queues automatically: local USB/parallel, remote 
+	  LPD/SMB/Socket. In addition one can define a queue which pipes the
+	  output into an arbitrary command or a raw queue. Bugfix: Removed
+	  colon after "q" (="quiet") in "getopts()" line. Introduced "-f"
+	  (="force") flag of foomatic-datafile.
+
+	* lpdomatic (bugfix): In lpdomatic the
+	  prepending of PJL options is suppressed for non-PJL printers.
+
+	* Makefile (bugfix): Added foomatic-*pjloptions, moved
+	  foomatic-configure to admin programs. Fixed links of the pcache
+	  and compiled directories in /var/cache/foomatic to
+	  /usr/local/share/foomatic/db, before the printer combo was always
+	  recompiled.
+	
+2001-06-21  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* Makefiles: Allowed the possibility to install the Perl libs with
+	  another prefix than the rest of the files. So installation is also
+	  possible when Perl does not search for libraries in /usr/local.
+	
+2001-06-20  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* Bugfixes: foomatic-configure could not delete queues, makeDefaults
+	  set a wrong path for lpdomatic, Makefile missed a "make" in
+	  the process of installing the Perl libraries.
+	
+2001-06-16  Till Kamppeter <till.kamppeter@gmx.net>
+
+	* PJL options can be added to the Foomatic data now:
+	  foomatic-getpjloptions retrives them from the printer,
+	  foomatic-addpjloptions generates XML datasets from them.
+	
+2001-04-01  Grant Taylor  <gtaylor@linuxprinting.org>
+
+	* Various renaming has happened.  Instead of 'PHTDBPUB', it's
+	  Foomatic::DB.  Foomatic::Defaults exports the libdir et al into
+	  you, and the flock of companion modules represent other mostly
+	  internal code.
+ 
+	* Rearranged all the code; now there's a proper Perl module, in
+	  theory at least, in Foomatic/, and the toplevel Makefile
+	  supports this.  There's also 'make testing', for a run-in-place
+	  setup.
+
+2001-03-14  Grant Taylor  <gtaylor@linuxprinting.org>
+
+	* Minor updates to reflect website postgres->xml conversion.
+
+2001-03-10  Grant Taylor  <gtaylor@linuxprinting.org>
+
+	* Added section="??" attribuge to arg_postscript.  Now it's clear
+	  where the Postscript snippets should be placed in the document.
+	  OTOH, the filters haven't even absorbed Crutcher's DocumentSetup
+	  patch, nevermind support for other locations.  And JCL still
+	  isn't handled.  Or ppd constraints.  Or queries.  Etc.
+
+	* Fixed Till's bug wrt empty options being left out.  Also fixed a
+	  few other subtle bugs in ppd parser and foo option generator.
+
+	* Small updates to Makefile; it might work again.  Note that it
+	  modifies the scripts in place before installing, which will
+	  cause confusion if you attempt further work in place.
+
+	* Added foomatic-kitload, which imports source data subsets into
+	  the local data library.
+
+2001-03-07  Grant Taylor  <gtaylor@linuxprinting.org>
+
+	* Various additional checks and things when doing combo ops in
+	  hopes of avoiding horribly mysterious error messages.
+
+	* Implemented foomatic-ppdload.  It might even work(tm).
+
+2001-03-06  Grant Taylor  <gtaylor@linuxprinting.org>
+
+	* Made dump_db strip out illegal constraints, and implemented
+	  comments filtering.  Only <p> and <a> are allowed now.  <br> is
+	  mapped into <p>.
+
+	* New snap of Postgres database
+
+	* Make install should(tm) now do something sensible.  It still
+	  ought to autodetect "flavor" for foomatic-configure.
+
+	* Rename make-datafile to foomatic-datafile.
+
+	* Wrap f-c -Q output in <queues> to make it have one toplevel
+	  entity.
+
+2001-03-04  Grant Taylor  <gtaylor@linuxprinting.org>
+
+	* Removed constraints entirely from combo data.  So arg_defval now
+	  appears at /option/arg_defval instead of at
+	  /option/constraints/constraint/arg_defval.
+
+	* Switch verified tag to an unverified tag.  Eventually, the xml
+	  dataset will be defined as containing only verified information,
+	  so this way there's one less tag for maintainers to fiddle with.
+
+	* Prepare for CVS integration.
+
+	* Various minor twiddles around the website programs.
+
+	* args_byname twiddle for Till.
+
+	* Include all the backends in the package.
+	
+2001-02-28  Grant Taylor  <gtaylor@linuxprinting.org>
+
+        * Require Storable
+        
+	* Added printer autodetect sections to overview.  Use xpath or
+	  similar to see the values in /printer/autodetect/parallel
+	
+	* -Q in foomatic-configure; prints XML summary of system printer
+	  configuration.  -X and -O allow examination of the whole
+	  database.  f-c API should now be sufficient to build GUIs atop.
+
+	* compile_db changes to limit pain of Perl memory leaks.
+
+	* Added the pcache, a persistent pre-parsed cache of everything.
+
+	* Various buglets from Till.  Invalid constraints just warn, don't
+	  hose the whole option.  Etc.
+
+	* Add foomatic-configure; initial LPD support.
+
+	* Various typos and minor fixes; the overview compile/save was
+	  broken, and the overview Perl was missing the driver list.
+
+	* Begin beta3.
+
+2001-02-25  Grant Taylor  <gtaylor@linuxprinting.org>
+
+	* Added methods get_makes, get_javascript2, get_models_by_make,
+	  get_printer_from_make_model.
+
+	* Added overview support.  Various methods now return or use the
+	  overview infromation; the overview is just a summary listing of
+	  various database-wide info.  By using it, many operations are
+	  less horribly slow.  The overview is db/compiled/overview.xml
+
+	* Don't actually need XML::Grove::PerlSAX.
+
+	* Added -f clag to compile_db, and extra work avoidance code.
+
+	* Fixed variable naming bug in pdq generator, and fixed boolean
+	  option conversion in getdat.
+
+2001-02-25  Grant Taylor  <gtaylor@habanero.picante.com>
+
+	* Included an experimental dataset from the new data generation
+	  code I've written for gimp-print.  The driver "stp-4.1.5" might
+	  even work(tm).
+
+2001-02-20  Grant Taylor  <gtaylor@habanero.picante.com>
+
+	* Subtle adjustments to <constraint> contents.	The <sense>
+	  element is gone; replaced with the sense="true" or sense="false"
+	  attribute on the <constraint> tag itself.  Also, you can now
+	  specify a <printer>printer-id</printer> element instead of
+	  make/model; this is useful for automatically generated data.
