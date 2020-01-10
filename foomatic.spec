@@ -4,7 +4,7 @@
 Summary: Tools for using the foomatic database of printers and printer drivers
 Name:       foomatic
 Version:    %{enginever}
-Release:    8%{?dist}.1
+Release:    9%{?dist}
 License:    GPLv2+
 Group: System Environment/Libraries
 
@@ -208,8 +208,8 @@ exit 0
 %{_mandir}/man1/foomatic-rip.1*
 
 %changelog
-* Fri May 24 2019 Michal Ruprich <mruprich@redhat.com> - 4.0.9-8.1
-- Resolves: #1713563 - removal of option in ghostscript caused foomatic-rip to fail
+* Thu May 23 2019 Zdenek Dohnal <zdohnal@redhat.com> - 4.0.9-9
+- 1707559 - removal of option in ghostscript caused foomatic-rip to fail
 
 * Thu Aug 28 2014 Tim Waugh <twaugh@redhat.com> - 4.0.9-8
 - Put some text into foomatic-preferred-drivers man page.
