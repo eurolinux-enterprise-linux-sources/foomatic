@@ -4,7 +4,7 @@
 Summary: Tools for using the foomatic database of printers and printer drivers
 Name:       foomatic
 Version:    %{enginever}
-Release:    8%{?dist}
+Release:    8%{?dist}.1
 License:    GPLv2+
 Group: System Environment/Libraries
 
@@ -16,12 +16,13 @@ Provides: printer-filters = 1.1-8
 Source0: http://www.openprinting.org/download/foomatic/foomatic-db-engine-%{enginever}.tar.gz
 
 # The CUPS driver and filter.
-# Source1: http://www.openprinting.org/download/foomatic/foomatic-filters-%{filtersver}.tar.gz
+# Source1: http://www.openprinting.org/download/foomatic/foomatic-filters-%%{filtersver}.tar.gz
 # We need to remove test/*.sh, because those files are non-free (Artistic). We don't use them.
 Source1: foomatic-filters-%{filtersver}-clean.tar.gz
 
 ## PATCHES FOR FOOMATIC-FILTERS (PATCHES 1 TO 100)
 Patch1: foomatic-filters-debug-string.patch
+Patch2: 0001-foomatic-rip-Changed-Ghostscript-call-to-count-pages.patch
 
 ## PATCHES FOR FOOMATIC-DB-ENGINE (PATCHES 101 TO 200)
 Patch101:       foomatic-manpages.patch
@@ -86,6 +87,8 @@ CUPS print filters for the foomatic package.
 pushd foomatic-filters-%{filtersver}
 # Too few arguments for format in a debugging string (bug #726384)
 %patch1 -p1 -b .debug-string
+# 1707559 - removal of option in ghostscript caused foomatic-rip to fail
+%patch2 -p1 -b .foomatic-rip-crash
 
 aclocal
 automake --add-missing
@@ -147,7 +150,7 @@ rm -rf  \
         %{buildroot}%{_libdir}/ppr \
         %{buildroot}%{_sysconfdir}/foomatic/filter.conf.sample \
         %{buildroot}%{_datadir}/foomatic/templates
-#%{buildroot}%%{_libdir}/perl5/site_perl
+#%%{buildroot}%%{_libdir}/perl5/site_perl
 find %{buildroot} -name .packlist | xargs rm -f
 
 mkdir  _enginedocs
@@ -205,6 +208,9 @@ exit 0
 %{_mandir}/man1/foomatic-rip.1*
 
 %changelog
+* Fri May 24 2019 Michal Ruprich <mruprich@redhat.com> - 4.0.9-8.1
+- Resolves: #1713563 - removal of option in ghostscript caused foomatic-rip to fail
+
 * Thu Aug 28 2014 Tim Waugh <twaugh@redhat.com> - 4.0.9-8
 - Put some text into foomatic-preferred-drivers man page.
 
