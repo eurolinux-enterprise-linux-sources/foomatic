@@ -4,28 +4,26 @@
 Summary: Tools for using the foomatic database of printers and printer drivers
 Name:       foomatic
 Version:    %{enginever}
-Release:    9%{?dist}
+Release:    3%{?dist}
 License:    GPLv2+
 Group: System Environment/Libraries
 
-# printer-filters package has gone (bug #967316, bug #1035450).
-Obsoletes: printer-filters < 1.1-8
-Provides: printer-filters = 1.1-8
+# printer-filters package has gone (bug #967316).
+Obsoletes: printer-filters < printer-filters-1.1-8
+Provides: printer-filters = printer-filters-1.1-8
 
 # The database engine.
 Source0: http://www.openprinting.org/download/foomatic/foomatic-db-engine-%{enginever}.tar.gz
 
 # The CUPS driver and filter.
-# Source1: http://www.openprinting.org/download/foomatic/foomatic-filters-%%{filtersver}.tar.gz
+# Source1: http://www.openprinting.org/download/foomatic/foomatic-filters-%{filtersver}.tar.gz
 # We need to remove test/*.sh, because those files are non-free (Artistic). We don't use them.
 Source1: foomatic-filters-%{filtersver}-clean.tar.gz
 
 ## PATCHES FOR FOOMATIC-FILTERS (PATCHES 1 TO 100)
 Patch1: foomatic-filters-debug-string.patch
-Patch2: 0001-foomatic-rip-Changed-Ghostscript-call-to-count-pages.patch
 
 ## PATCHES FOR FOOMATIC-DB-ENGINE (PATCHES 101 TO 200)
-Patch101:       foomatic-manpages.patch
 
 ## PATCHES FOR FOOMATIC-DB-HPIJS (PATCHES 201 TO 300)
 
@@ -87,8 +85,6 @@ CUPS print filters for the foomatic package.
 pushd foomatic-filters-%{filtersver}
 # Too few arguments for format in a debugging string (bug #726384)
 %patch1 -p1 -b .debug-string
-# 1707559 - removal of option in ghostscript caused foomatic-rip to fail
-%patch2 -p1 -b .foomatic-rip-crash
 
 aclocal
 automake --add-missing
@@ -96,10 +92,6 @@ autoconf
 popd
 
 pushd foomatic-db-engine-%{enginever}
-
-# Ship more manpages.
-%patch101 -p1 -b .manpages
-
 chmod a+x mkinstalldirs
 aclocal
 autoconf
@@ -150,7 +142,7 @@ rm -rf  \
         %{buildroot}%{_libdir}/ppr \
         %{buildroot}%{_sysconfdir}/foomatic/filter.conf.sample \
         %{buildroot}%{_datadir}/foomatic/templates
-#%%{buildroot}%%{_libdir}/perl5/site_perl
+#%{buildroot}%%{_libdir}/perl5/site_perl
 find %{buildroot} -name .packlist | xargs rm -f
 
 mkdir  _enginedocs
@@ -180,22 +172,13 @@ exit 0
 %{perl_vendorlib}/Foomatic
 %{_cups_serverbin}/backend/beh
 %{_cups_serverbin}/driver/*
-%{_mandir}/man1/foomatic-cleanupdrivers.1*
 %{_mandir}/man1/foomatic-combo-xml.1*
 %{_mandir}/man1/foomatic-compiledb.1*
 %{_mandir}/man1/foomatic-configure.1*
-%{_mandir}/man1/foomatic-datafile.1*
-%{_mandir}/man1/foomatic-extract-text.1*
-%{_mandir}/man1/foomatic-fix-xml.1*
-%{_mandir}/man1/foomatic-nonumericalids.1*
 %{_mandir}/man1/foomatic-perl-data.1*
 %{_mandir}/man1/foomatic-ppd-options.1*
-%{_mandir}/man1/foomatic-ppd-to-xml.1*
 %{_mandir}/man1/foomatic-ppdfile.1*
-%{_mandir}/man1/foomatic-printermap-to-gutenprint-xml.1*
 %{_mandir}/man1/foomatic-printjob.1*
-%{_mandir}/man1/foomatic-replaceoldprinterids.1*
-%{_mandir}/man1/foomatic-searchprinter.1*
 %{_mandir}/man8/*
 %{_var}/cache/foomatic
 
@@ -208,24 +191,6 @@ exit 0
 %{_mandir}/man1/foomatic-rip.1*
 
 %changelog
-* Thu May 23 2019 Zdenek Dohnal <zdohnal@redhat.com> - 4.0.9-9
-- 1707559 - removal of option in ghostscript caused foomatic-rip to fail
-
-* Thu Aug 28 2014 Tim Waugh <twaugh@redhat.com> - 4.0.9-8
-- Put some text into foomatic-preferred-drivers man page.
-
-* Thu Aug 21 2014 Tim Waugh <twaugh@redhat.com> - 4.0.9-7
-- Ship more manpages (bug #948965).
-
-* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 4.0.9-6
-- Mass rebuild 2014-01-24
-
-* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 4.0.9-5
-- Mass rebuild 2013-12-27
-
-* Fri Dec 13 2013 Jiri Popelka <jpopelka@redhat.com> - 4.0.9-4
-- Correct Obsoletes/Provides printer-filters (bug #1035450)
-
 * Mon Jun  3 2013 Tim Waugh <twaugh@redhat.com> - 4.0.9-3
 - Obsolete/provide printer-filters package now it has gone (bug #967316).
 
